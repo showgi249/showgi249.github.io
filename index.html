@@ -1,123 +1,464 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
+
 <head>
+
+  <!-- =========================
+       Basic
+  ========================== -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Showgi249 — مطوّر برمجيات وصانع محتوى سوداني يشارك التقنية والأفكار والتوعية.">
-  <meta name="theme-color" content="#0b1020">
-  <title>Showgi249 | أفكار. تقنية. تأثير.</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Showgi249 — مطوّر برمجيات وصانع محتوى سوداني. البرمجة، التقنية، صناعة المحتوى، والأفكار التي تستحق أن تُناقش."
+  >
+
+  <meta
+    name="keywords"
+    content="Showgi249, Showgi, Sudan, Sudanese, Python, Linux, Programming, Software, Content Creator"
+  >
+
+  <meta name="author" content="Ahmed Shawqi">
+
+  <meta
+    name="theme-color"
+    content="#071A33"
+  >
+
+  <meta name="robots" content="index, follow">
+
+
+  <!-- =========================
+       Website
+  ========================== -->
+
+  <link
+    rel="canonical"
+    href="https://showgi249.github.io/"
+  >
+
+
+  <!-- =========================
+       Favicon
+  ========================== -->
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="logo.png"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="logo.png"
+  >
+
+
+  <!-- =========================
+       Open Graph
+  ========================== -->
+
+  <meta
+    property="og:title"
+    content="Showgi249 | أفكار. تقنية. تأثير."
+  >
+
+  <meta
+    property="og:description"
+    content="مساحة شخصية تجمع البرمجة، التقنية، صناعة المحتوى، والأفكار التي تستحق أن تُناقش وتتحول إلى أثر."
+  >
+
+  <meta
+    property="og:image"
+    content="https://showgi249.github.io/og-image.png"
+  >
+
+  <meta
+    property="og:url"
+    content="https://showgi249.github.io/"
+  >
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:site_name"
+    content="Showgi249"
+  >
+
+  <meta
+    property="og:locale"
+    content="ar_AR"
+  >
+
+
+  <!-- =========================
+       X / Twitter
+  ========================== -->
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <meta
+    name="twitter:title"
+    content="Showgi249 | أفكار. تقنية. تأثير."
+  >
+
+  <meta
+    name="twitter:description"
+    content="البرمجة، التقنية، صناعة المحتوى، والأفكار التي تستحق أن تُناقش."
+  >
+
+  <meta
+    name="twitter:image"
+    content="https://showgi249.github.io/og-image.png"
+  >
+
+  <meta
+    name="twitter:site"
+    content="@showgi249"
+  >
+
+
+  <!-- =========================
+       Title
+  ========================== -->
+
+  <title>
+    Showgi249 | أفكار. تقنية. تأثير.
+  </title>
+
+
+  <!-- =========================
+       Fonts
+  ========================== -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- =========================
+       CSS
+  ========================== -->
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
+
 <body>
-  <div class="progress"></div>
+
+
+  <!-- =========================
+       Reading Progress
+  ========================== -->
+
+  <div
+    class="progress"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =========================
+       Header
+  ========================== -->
+
   <header class="site-header">
-    <nav class="nav container">
-      <a class="brand" href="#home" aria-label="Showgi249">
-        <span class="brand-mark">S</span><span>Showgi<span class="accent">249</span></span>
+
+    <nav
+      class="nav container"
+      aria-label="التنقل الرئيسي"
+    >
+
+
+      <!-- Brand -->
+
+      <a
+        class="brand"
+        href="#home"
+        aria-label="Showgi249"
+      >
+
+        <span class="brand-mark">
+          S
+        </span>
+
+        <span>
+          Showgi<span class="accent">249</span>
+        </span>
+
       </a>
-      <button class="menu-btn" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+
+
+      <!-- Mobile Menu -->
+
+      <button
+        class="menu-btn"
+        aria-label="فتح القائمة"
+        aria-expanded="false"
+        type="button"
+      >
+        ☰
+      </button>
+
+
+      <!-- Navigation -->
+
       <div class="nav-links">
-        <a href="#about">من أنا</a>
-        <a href="#work">المشاريع</a>
-        <a href="#ideas">الأفكار</a>
-        <a href="#contact">تواصل</a>
+
+        <a href="#about">
+          من أنا
+        </a>
+
+        <a href="#work">
+          المشاريع
+        </a>
+
+        <a href="#ideas">
+          الأفكار
+        </a>
+
+        <a href="#contact">
+          تواصل
+        </a>
+
       </div>
-      <a class="nav-cta" href="#contact">لنتحدث ↗</a>
+
+
+      <!-- CTA -->
+
+      <a
+        class="nav-cta"
+        href="#contact"
+      >
+        لنتحدث ↗
+      </a>
+
     </nav>
+
   </header>
 
+
+
   <main id="home">
-    <section class="hero container">
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section
+      class="hero container"
+      aria-labelledby="hero-title"
+    >
+
       <div class="hero-copy reveal">
-        <p class="eyebrow"><span></span> ألسوداني • مطوّر • صانع مُحتوى </p>
-        <h1>أفكار <em>تتحول</em><br>إلى أثر.</h1>
-        <p class="hero-text">مساحة شخصية تجمع التقنية، البرمجة، صناعة المحتوى، والأفكار التي تستحق أن تُناقش.</p>
+
+
+        <p class="eyebrow">
+
+          <span></span>
+
+          سوداني • مطوّر • صانع محتوى
+
+        </p>
+
+
+        <h1 id="hero-title">
+
+          أفكار
+          <em>تتحول</em>
+          <br>
+          إلى أثر.
+
+        </h1>
+
+
+        <p class="hero-text">
+
+          مساحة تجمع البرمجة، التقنية، صناعة المحتوى،
+          والأفكار التي تستحق أن تُناقش وتتحول إلى أثر.
+
+        </p>
+
+
         <div class="hero-actions">
-          <a class="btn primary" href="#work">استكشف أعمالي</a>
-          <a class="btn ghost" href="#about">اعرف قصتي ↓</a>
+
+          <a
+            class="btn primary"
+            href="#work"
+          >
+            استكشف أعمالي
+          </a>
+
+          <a
+            class="btn ghost"
+            href="#about"
+          >
+            اعرف قصتي ↓
+          </a>
+
         </div>
+
+
+        <!-- Stats -->
+
         <div class="stats">
-          <div><strong>249</strong><span>رمز وهوية</span></div>
-          <div><strong>∞</strong><span>أفكار قادمة</span></div>
-          <div><strong>01</strong><span>رحلة مستمرة</span></div>
-        </div>
-      </div>
-      <div class="hero-art reveal">
-        <div class="orb orb-one"></div><div class="orb orb-two"></div>
-        <div class="grid-card">
-          <div class="mini-top"><span>SHOWGI249</span><span>01 / 01</span></div>
-          <div class="big-s">S<span>249</span></div>
-          <div class="quote">«الفكرة الجيدة<br>تترك أثرًا.»</div>
-          <div class="line"></div>
-          <div class="mini-bottom"><span>KHARTOUM / SUDAN</span><span>BUILD • THINK • SHARE</span></div>
-        </div>
-      </div>
-    </section>
 
-    <section class="ticker" aria-label="مجالات">
-      <div>PYTHON <span>✦</span> WEB <span>✦</span> LINUX <span>✦</span> CONTENT <span>✦</span> IDEAS <span>✦</span> SUDAN <span>✦</span> PYTHON <span>✦</span> WEB</div>
-    </section>
+          <div>
 
-    <section id="about" class="section container split">
-      <div class="section-label reveal"><span>01</span> من أنا</div>
-      <div class="section-content reveal">
-        <h2>أبني، أتعلم، <span>وأشارك.</span></h2>
-        <p class="lead">Showgi249 هو اسم وهوية رقمية لأحمد شوقي أدم احمد: مهتم بالبرمجة والتقنية وصناعة المحتوى، ويؤمن بأن التعلم الحقيقي يبدأ عندما تتحول المعرفة إلى تجربة وعمل.</p>
-        <p>هذا الموقع هو نقطة انطلاق لمساحة شخصية تُعرض فيها المشاريع، الأفكار، التجارب، والمحتوى التوعوي بأسلوب بسيط ومباشر.</p>
-        <div class="chips"><span>Software</span><span>Python</span><span>Linux</span><span>Content</span><span>Learning</span></div>
-      </div>
-    </section>
+            <strong>
+              249
+            </strong>
 
-    <section id="work" class="section dark-section">
-      <div class="container">
-        <div class="section-head reveal">
-          <div><div class="section-label"><span>02</span> المشاريع</div><h2>أشياء <span>أبنيها.</span></h2></div>
-          <p>نماذج أولية ومشاريع تقنية يمكن تطويرها مع الوقت.</p>
-        </div>
-        <div class="projects">
-          <article class="project reveal"><div class="project-no">01</div><div class="project-icon">⌘</div><h3>Python Lab</h3><p>تجارب وأدوات صغيرة بلغة Python للتعلم وبناء حلول عملية.</p><a href="#contact">اكتشف المشروع ↗</a></article>
-          <article class="project featured reveal"><div class="project-no">02</div><div class="project-icon">◈</div><h3>Showgi Speaks</h3><p>مساحة للمحتوى والأفكار التوعوية والأسئلة التي تفتح باب النقاش.</p><a href="#ideas">شاهد الأفكار ↗</a></article>
-          <article class="project reveal"><div class="project-no">03</div><div class="project-icon">⌁</div><h3>Web Experiments</h3><p>واجهات وتجارب ويب تركز على التصميم، الأداء، وتجربة المستخدم.</p><a href="#contact">قريبًا ↗</a></article>
-        </div>
-      </div>
-    </section>
+            <span>
+              رمز وهوية
+            </span>
 
-    <section id="ideas" class="section container">
-      <div class="section-head reveal">
-        <div><div class="section-label"><span>03</span> الأفكار</div><h2>أسئلة <span>تستحق النقاش.</span></h2></div>
-        <p>من التقنية إلى المجتمع — المحتوى هنا ليس للضجيج، بل للفكرة.</p>
-      </div>
-      <div class="ideas">
-        <article class="idea reveal"><span>فكرة 01</span><h3>ليه نحنا كدا؟</h3><p>قراءة ساخرة وهادئة لبعض العادات والأفكار التي أصبحت طبيعية في المجتمع.</p></article>
-        <article class="idea reveal"><span>فكرة 02</span><h3>التعلّم مش رفاهية</h3><p>كيف يمكن للمهارة أن تغيّر طريقة الإنسان في النظر إلى نفسه ومستقبله.</p></article>
-        <article class="idea reveal"><span>فكرة 03</span><h3>الانضباط قبل الحماس</h3><p>الحماس يبدأ الطريق، لكن الاستمرار هو الذي يصنع النتيجة.</p></article>
-      </div>
-    </section>
-
-    <section id="contact" class="section contact-section">
-      <div class="container contact-box reveal">
-        <div><div class="section-label"><span>04</span> تواصل</div><h2>عندك فكرة؟<br><span>خلينا نبنيها.</span></h2></div>
-        <div class="contact-side">
-          <p>للتعاون، المشاريع، أو مجرد نقاش محترم حول فكرة جديدة.</p>
-          <a class="email" href="mailto:showgi249@gmail.com">showgi249@gmail.com ↗</a>
-          <div class="socials">
-            <a href="https://www.instagram.com/showgi249/" target="_blank" rel="noopener">Instagram</a>
-            <a href="https://x.com/showgi249" target="_blank" rel="noopener">X</a>
-            <a href="https://t.me/showgi249" target="_blank" rel="noopener">Telegram</a>
-            <a href="https://www.threads.com/@showgi249" target="_blank" rel="noopener">Threads</a>
           </div>
-        </div>
-      </div>
-    </section>
-  </main>
 
-  <footer class="footer container">
-    <span>© <span id="year"></span> Showgi249</span>
-    <span>BUILD • THINK • SHARE</span>
-  </footer>
-  <script src="script.js"></script>
-</body>
-</html>
+
+          <div>
+
+            <strong>
+              ∞
+            </strong>
+
+            <span>
+              أفكار قادمة
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              01
+            </strong>
+
+            <span>
+              رحلة مستمرة
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =========================
+           HERO ART
+      ========================== -->
+
+      <div class="hero-art reveal">
+
+        <div
+          class="orb orb-one"
+          aria-hidden="true"
+        ></div>
+
+        <div
+          class="orb orb-two"
+          aria-hidden="true"
+        ></div>
+
+
+        <div class="grid-card">
+
+
+          <div class="mini-top">
+
+            <span>
+              SHOWGI249
+            </span>
+
+            <span>
+              01 / 01
+            </span>
+
+          </div>
+
+
+          <div class="big-s">
+
+            S<span>249</span>
+
+          </div>
+
+
+          <div class="quote">
+
+            «الفكرة الجيدة
+            <br>
+            تترك أثرًا.»
+
+          </div>
+
+
+          <div class="line"></div>
+
+
+          <div class="mini-bottom">
+
+            <span>
+              KHARTOUM / SUDAN
+            </span>
+
+            <span>
+              BUILD • THINK • SHARE
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         TICKER
+    ========================== -->
+
+    <section
+      class="ticker"
+      aria-label="مجالات Showgi249"
+    >
+
+      <div>
+
+        PYTHON
+        <span>✦</span>
+
+        WEB
+        <span>✦</span>
+
+        LINUX
+        <
