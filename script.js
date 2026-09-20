@@ -1,62 +1,229 @@
-const nav = document.querySelector(".nav");
-const menu = document.querySelector(".menu-btn");
+/* =========================
+   SHOWGI249
+   Main JavaScript
+========================= */
 
-if (menu && nav) {
-  menu.addEventListener("click", () => {
-    const open = nav.classList.toggle("open");
-    menu.setAttribute("aria-expanded", open);
-  });
+document.addEventListener("DOMContentLoaded", () => {
 
-  document.querySelectorAll(".nav-links a").forEach(a => {
-    a.addEventListener("click", () => {
-      nav.classList.remove("open");
-      menu.setAttribute("aria-expanded", "false");
+  /* =========================
+     Mobile Navigation
+  ========================== */
+
+  const nav = document.querySelector(".nav");
+  const menu = document.querySelector(".menu-btn");
+  const navLinks = document.querySelector(".nav-links");
+
+  if (menu && navLinks) {
+
+    menu.addEventListener("click", () => {
+
+      const isOpen = navLinks.classList.toggle("open");
+
+      menu.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+      menu.setAttribute(
+        "aria-label",
+        isOpen ? "إغلاق القائمة" : "فتح القائمة"
+      );
+
     });
-  });
-}
 
 
-// ظهور العناصر أثناء التمرير
-const io = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-        io.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.12
+    /* Close menu after clicking a link */
+
+    navLinks
+      .querySelectorAll("a")
+      .forEach(link => {
+
+        link.addEventListener("click", () => {
+
+          navLinks.classList.remove("open");
+
+          menu.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          menu.setAttribute(
+            "aria-label",
+            "فتح القائمة"
+          );
+
+        });
+
+      });
+
   }
-);
-
-document.querySelectorAll(".reveal").forEach(el => {
-  io.observe(el);
-});
 
 
-// شريط التقدم
-const progress = document.querySelector(".progress");
+  /* =========================
+     Reveal Animation
+  ========================== */
 
-if (progress) {
-  window.addEventListener("scroll", () => {
-    const scrollHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
+  const revealElements =
+    document.querySelectorAll(".reveal");
 
-    if (scrollHeight > 0) {
-      const scrollPercent =
-        (window.scrollY / scrollHeight) * 100;
 
-      progress.style.width = scrollPercent + "%";
+  if ("IntersectionObserver" in window) {
+
+    const observer =
+      new IntersectionObserver(
+        entries => {
+
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+              entry.target.classList.add("show");
+
+              observer.unobserve(
+                entry.target
+              );
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.12
+        }
+      );
+
+
+    revealElements.forEach(element => {
+      observer.observe(element);
+    });
+
+  } else {
+
+    /* Fallback for old browsers */
+
+    revealElements.forEach(element => {
+      element.classList.add("show");
+    });
+
+  }
+
+
+  /* =========================
+     Reading Progress
+  ========================== */
+
+  const progress =
+    document.querySelector(".progress");
+
+
+  function updateProgress() {
+
+    if (!progress) {
+      return;
     }
-  });
-}
+
+    const documentHeight =
+      document.documentElement.scrollHeight;
+
+    const windowHeight =
+      window.innerHeight;
+
+    const scrollableHeight =
+      documentHeight - windowHeight;
 
 
-// السنة الحالية
-const year = document.getElementById("year");
+    if (scrollableHeight <= 0) {
 
-if (year) {
-  year.textContent = new Date().getFullYear();
-}
+      progress.style.width = "100%";
+
+      return;
+
+    }
+
+
+    const percentage =
+      (window.scrollY / scrollableHeight) * 100;
+
+
+    progress.style.width =
+      Math.min(100, Math.max(0, percentage)) + "%";
+
+  }
+
+
+  window.addEventListener(
+    "scroll",
+    updateProgress,
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "resize",
+    updateProgress
+  );
+
+  updateProgress();
+
+
+  /* =========================
+     Current Year
+  ========================== */
+
+  const year =
+    document.getElementById("year");
+
+
+  if (year) {
+
+    year.textContent =
+      new Date().getFullYear();
+
+  }
+
+
+  /* =========================
+     Close Mobile Menu
+     When clicking outside
+  ========================== */
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      if (
+        !nav ||
+        !menu ||
+        !navLinks
+      ) {
+        return;
+      }
+
+
+      const clickedInsideNav =
+        nav.contains(event.target);
+
+
+      if (
+        !clickedInsideNav &&
+        navLinks.classList.contains("open")
+      ) {
+
+        navLinks.classList.remove("open");
+
+        menu.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+        menu.setAttribute(
+          "aria-label",
+          "فتح القائمة"
+        );
+
+      }
+
+    }
+  );
+
+});
