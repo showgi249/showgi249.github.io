@@ -4,709 +4,562 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Showgi249 | أفكار • تقنية • تأثير</title>
-
-  <meta name="description" content="Showgi249 — أحمد شوقي، مطوّر وصانع محتوى سوداني. أفكار، تقنية، برمجة وتأثير.">
+  <title>أحمد شوقي | showgi249</title>
+  <meta name="description" content="الموقع الرسمي لأحمد شوقي — showgi249. تابع أحدث المحتوى وتواصل معي عبر منصات التواصل الاجتماعي.">
+  <meta name="keywords" content="أحمد شوقي, showgi249, showgi249.com, السودان, صانع محتوى">
   <meta name="author" content="أحمد شوقي">
+  <meta name="theme-color" content="#0b1020">
 
-  <!-- =========================
-       Google Analytics - GA4
-       ========================= -->
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="أحمد شوقي | showgi249">
+  <meta property="og:description" content="الموقع الرسمي لأحمد شوقي — showgi249">
+  <meta property="og:url" content="https://showgi249.com/">
+  <meta property="og:site_name" content="showgi249">
+
+  <!-- Twitter/X -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="أحمد شوقي | showgi249">
+  <meta name="twitter:description" content="الموقع الرسمي لأحمد شوقي — showgi249">
+
+  <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z763L98WXF"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-Z763L98WXF');
   </script>
 
-  <!-- =========================
-       Plausible Analytics
-       ========================= -->
-  <script async src="https://plausible.io/js/pa-nUxvM1rDaNdOyY4LomFwH.js"></script>
-
-  <script>
-    window.plausible = window.plausible || function () {
-      (plausible.q = plausible.q || []).push(arguments);
-    };
-
-    plausible.init();
-  </script>
-
-  <!-- =========================
-       Styles
-       ========================= -->
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#070b16;
+      --card:rgba(18,25,45,.72);
+      --card-border:rgba(255,255,255,.10);
+      --text:#f7f8ff;
+      --muted:#aeb7cc;
+      --accent:#7c5cff;
+      --accent2:#19d3ae;
+      --shadow:0 25px 70px rgba(0,0,0,.35);
     }
 
-    html {
-      scroll-behavior: smooth;
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      min-height:100vh;
+      font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 10%,rgba(124,92,255,.25),transparent 30%),
+        radial-gradient(circle at 85% 20%,rgba(25,211,174,.16),transparent 28%),
+        linear-gradient(145deg,#050812,#0b1020 50%,#060913);
+      overflow-x:hidden;
     }
 
-    body {
-      font-family:
-        Arial,
-        "Tahoma",
-        sans-serif;
-      background: #0b0b0f;
-      color: #ffffff;
-      line-height: 1.8;
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:40px 40px;
+      mask-image:linear-gradient(to bottom,black,transparent);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    a{color:inherit;text-decoration:none}
+
+    .container{
+      width:min(1050px,calc(100% - 32px));
+      margin:auto;
+      position:relative;
+      z-index:1;
     }
 
-    .container {
-      width: min(1100px, 92%);
-      margin: auto;
+    nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:22px 0;
     }
 
-    /* =========================
-       Header
-       ========================= */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(11, 11, 15, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.3px;
     }
 
-    .nav {
-      min-height: 75px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+    .brand-mark{
+      width:38px;height:38px;border-radius:12px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 10px 30px rgba(124,92,255,.3);
+      font-size:16px;
     }
 
-    .logo {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: -1px;
+    .nav-btn{
+      border:1px solid var(--card-border);
+      background:rgba(255,255,255,.05);
+      padding:9px 14px;border-radius:999px;
+      color:var(--muted);font-size:13px;
+      backdrop-filter:blur(12px);
     }
 
-    .logo span {
-      color: #7c5cff;
+    .hero{
+      text-align:center;
+      padding:54px 0 35px;
     }
 
-    nav {
-      display: flex;
-      gap: 25px;
-      align-items: center;
+    .avatar-wrap{
+      width:126px;height:126px;
+      margin:0 auto 22px;
+      padding:4px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2),#fff);
+      box-shadow:0 18px 55px rgba(124,92,255,.32);
+      animation:float 5s ease-in-out infinite;
     }
 
-    nav a {
-      color: #d0d0d5;
-      font-size: 15px;
-      transition: 0.3s;
+    .avatar{
+      width:100%;height:100%;
+      border-radius:50%;
+      display:grid;place-items:center;
+      background:linear-gradient(145deg,#18213a,#0c1222);
+      border:4px solid #0b1020;
+      font-size:42px;font-weight:900;
+      overflow:hidden;
     }
 
-    nav a:hover {
-      color: #ffffff;
+    .avatar span{
+      background:linear-gradient(135deg,#fff,var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
     }
 
-    /* =========================
-       Hero
-       ========================= */
-
-    .hero {
-      min-height: 88vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+    h1{
+      font-size:clamp(34px,7vw,64px);
+      line-height:1.05;
+      letter-spacing:-1.8px;
+      margin-bottom:12px;
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      background: #6d4aff;
-      filter: blur(150px);
-      opacity: 0.18;
-      top: 10%;
-      right: -150px;
+    .username{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:#d7dded;
+      background:rgba(255,255,255,.055);
+      border:1px solid var(--card-border);
+      border-radius:999px;
+      padding:7px 13px;
+      font-size:14px;
+      margin-bottom:20px;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 850px;
+    .verified{
+      width:18px;height:18px;border-radius:50%;
+      display:grid;place-items:center;
+      background:#2997ff;color:#fff;
+      font-size:11px;font-weight:900;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 7px 15px;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 50px;
-      color: #b9b2ff;
-      margin-bottom: 25px;
-      background: rgba(255,255,255,0.03);
-      font-size: 14px;
+    .intro{
+      max-width:680px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.9;
     }
 
-    .hero h1 {
-      font-size: clamp(45px, 8vw, 90px);
-      line-height: 1.05;
-      letter-spacing: -4px;
-      margin-bottom: 25px;
+    .actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:24px;
     }
 
-    .hero h1 span {
-      color: #7c5cff;
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      min-height:46px;
+      padding:0 18px;
+      border-radius:14px;
+      border:1px solid var(--card-border);
+      background:rgba(255,255,255,.055);
+      color:#fff;
+      cursor:pointer;
+      transition:.25s ease;
+      font-weight:700;
     }
 
-    .hero p {
-      color: #aaaab4;
-      font-size: 20px;
-      max-width: 700px;
-      margin-bottom: 35px;
+    .btn:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,.10);
     }
 
-    .buttons {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
+    .btn.primary{
+      border:0;
+      background:linear-gradient(135deg,var(--accent),#5f86ff);
+      box-shadow:0 12px 35px rgba(124,92,255,.28);
     }
 
-    .btn {
-      padding: 13px 24px;
-      border-radius: 12px;
-      font-weight: bold;
-      transition: 0.3s;
-      display: inline-block;
+    section{padding:32px 0}
+
+    .section-title{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:16px;
     }
 
-    .btn-primary {
-      background: #ffffff;
-      color: #0b0b0f;
+    .section-title h2{font-size:24px}
+    .section-title p{color:var(--muted);font-size:13px}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
     }
 
-    .btn-primary:hover {
-      transform: translateY(-3px);
+    .card{
+      position:relative;
+      overflow:hidden;
+      padding:20px;
+      border-radius:20px;
+      background:var(--card);
+      border:1px solid var(--card-border);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      transition:.25s ease;
     }
 
-    .btn-secondary {
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #ffffff;
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(255,255,255,.18);
     }
 
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.06);
+    .social{
+      display:flex;
+      align-items:center;
+      gap:14px;
     }
 
-    /* =========================
-       Ticker
-       ========================= */
-
-    .ticker {
-      overflow: hidden;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding: 16px 0;
-      white-space: nowrap;
-      color: #777780;
-      font-size: 13px;
-      letter-spacing: 2px;
+    .icon{
+      width:48px;height:48px;
+      border-radius:15px;
+      display:grid;place-items:center;
+      font-weight:900;font-size:17px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08);
     }
 
-    .ticker-inner {
-      display: inline-block;
-      animation: ticker 25s linear infinite;
+    .social h3{font-size:16px;margin-bottom:4px}
+    .social p{font-size:13px;color:var(--muted)}
+
+    .arrow{
+      margin-right:auto;
+      color:#aab3c9;
+      font-size:20px;
     }
 
-    .ticker span {
-      margin: 0 25px;
+    .about{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:14px;
     }
 
-    @keyframes ticker {
-      from {
-        transform: translateX(0);
-      }
-      to {
-        transform: translateX(50%);
-      }
+    .about .card{
+      min-height:190px;
     }
 
-    /* =========================
-       Sections
-       ========================= */
+    .about h3{font-size:20px;margin-bottom:12px}
+    .about p{color:var(--muted);line-height:1.95;font-size:15px}
 
-    section {
-      padding: 100px 0;
+    .facts{
+      display:grid;
+      gap:10px;
+      margin-top:16px;
     }
 
-    .section-title {
-      margin-bottom: 50px;
+    .fact{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:11px 13px;
+      border-radius:12px;
+      background:rgba(255,255,255,.045);
+      color:var(--muted);
+      font-size:13px;
     }
 
-    .section-title small {
-      color: #7c5cff;
-      font-weight: bold;
-      display: block;
-      margin-bottom: 8px;
+    .fact strong{color:#fff}
+
+    .links{
+      display:grid;
+      gap:11px;
     }
 
-    .section-title h2 {
-      font-size: clamp(32px, 5vw, 55px);
-      line-height: 1.2;
+    .link-card{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:15px;
+      border:1px solid var(--card-border);
+      border-radius:16px;
+      background:rgba(255,255,255,.045);
+      transition:.25s ease;
     }
 
-    .section-title p {
-      color: #92929c;
-      margin-top: 15px;
-      max-width: 650px;
+    .link-card:hover{
+      transform:translateX(-4px);
+      background:rgba(255,255,255,.075);
     }
 
-    /* =========================
-       About
-       ========================= */
-
-    .about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      align-items: center;
+    footer{
+      text-align:center;
+      padding:45px 0 28px;
+      color:#7f8aa3;
+      font-size:13px;
     }
 
-    .about-text p {
-      color: #aaaab4;
-      font-size: 18px;
-      margin-bottom: 18px;
+    .footer-line{
+      width:80px;height:1px;
+      background:rgba(255,255,255,.12);
+      margin:0 auto 18px;
     }
 
-    .about-card {
-      padding: 35px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 25px;
-      background: rgba(255,255,255,0.025);
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translate(-50%,30px);
+      opacity:0;
+      pointer-events:none;
+      padding:11px 16px;
+      border-radius:12px;
+      background:#151d31;
+      border:1px solid rgba(255,255,255,.12);
+      color:#fff;
+      font-size:13px;
+      transition:.25s ease;
+      z-index:20;
     }
 
-    .about-card strong {
-      font-size: 45px;
-      display: block;
-      color: #7c5cff;
+    .toast.show{
+      transform:translate(-50%,0);
+      opacity:1;
     }
 
-    /* =========================
-       Projects
-       ========================= */
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-7px)}
     }
 
-    .card {
-      padding: 30px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 22px;
-      background: rgba(255,255,255,0.025);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-7px);
-      border-color: rgba(124,92,255,0.5);
-    }
-
-    .card-number {
-      color: #7c5cff;
-      font-size: 14px;
-      margin-bottom: 25px;
-    }
-
-    .card h3 {
-      font-size: 23px;
-      margin-bottom: 12px;
-    }
-
-    .card p {
-      color: #92929c;
-    }
-
-    /* =========================
-       Ideas
-       ========================= */
-
-    .ideas {
-      display: grid;
-      gap: 15px;
-    }
-
-    .idea {
-      padding: 25px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      transition: 0.3s;
-    }
-
-    .idea:hover {
-      background: rgba(255,255,255,0.04);
-    }
-
-    .idea h3 {
-      font-size: 21px;
-    }
-
-    .idea span {
-      color: #7c5cff;
-      font-size: 25px;
-    }
-
-    /* =========================
-       Contact
-       ========================= */
-
-    .contact-box {
-      text-align: center;
-      padding: 70px 25px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 30px;
-      background: rgba(255,255,255,0.025);
-    }
-
-    .contact-box h2 {
-      font-size: clamp(35px, 6vw, 60px);
-      margin-bottom: 15px;
-    }
-
-    .contact-box p {
-      color: #92929c;
-      margin-bottom: 30px;
-    }
-
-    /* =========================
-       Footer
-       ========================= */
-
-    footer {
-      padding: 30px 0;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      color: #707079;
-      font-size: 14px;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    /* =========================
-       Mobile
-       ========================= */
-
-    @media (max-width: 800px) {
-
-      nav {
-        display: none;
-      }
-
-      .hero {
-        min-height: 80vh;
-      }
-
-      .hero h1 {
-        letter-spacing: -2px;
-      }
-
-      .hero p {
-        font-size: 17px;
-      }
-
-      .about {
-        grid-template-columns: 1fr;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      section {
-        padding: 75px 0;
-      }
-
-      .idea {
-        align-items: flex-start;
-      }
+    @media(max-width:700px){
+      .container{width:min(100% - 22px,1050px)}
+      nav{padding-top:15px}
+      .hero{padding-top:40px}
+      .grid,.about{grid-template-columns:1fr}
+      .intro{font-size:15px}
+      h1{font-size:42px}
+      .card{padding:17px}
     }
   </style>
 </head>
 
 <body>
+  <div class="container">
 
-  <!-- =========================
-       Header
-       ========================= -->
-
-  <header>
-    <div class="container nav">
-
-      <a href="#" class="logo">
-        Showgi<span>249</span>
+    <nav>
+      <a class="brand" href="/">
+        <span class="brand-mark">A</span>
+        <span>showgi249</span>
       </a>
+      <a class="nav-btn" href="#contact">تواصل معي</a>
+    </nav>
 
-      <nav>
-        <a href="#about">من أنا</a>
-        <a href="#work">المشاريع</a>
-        <a href="#ideas">الأفكار</a>
-        <a href="#contact">تواصل</a>
-      </nav>
-
-    </div>
-  </header>
-
-
-  <!-- =========================
-       Hero
-       ========================= -->
-
-  <main>
-
-    <section class="hero">
-      <div class="container">
-
-        <div class="hero-content">
-
-          <span class="badge">
-            SHOWGI249 • DIGITAL CREATOR
-          </span>
-
-          <h1>
-            أفكار تتحول<br>
-            إلى <span>تأثير.</span>
-          </h1>
-
-          <p>
-            أنا أحمد شوقي — مطوّر وصانع محتوى سوداني.
-            أشارك أفكارًا وتجارب في التقنية والبرمجة وصناعة المحتوى،
-            وأحاول دائمًا أن أصنع شيئًا له معنى.
-          </p>
-
-          <div class="buttons">
-
-            <a href="#work" class="btn btn-primary">
-              استكشف أعمالي
-            </a>
-
-            <a href="#contact" class="btn btn-secondary">
-              تواصل معي
-            </a>
-
+    <main>
+      <header class="hero">
+        <div class="avatar-wrap">
+          <div class="avatar" aria-label="أحمد شوقي">
+            <span>AS</span>
           </div>
-
         </div>
 
-      </div>
-    </section>
+        <h1>أحمد شوقي</h1>
 
+        <div class="username">
+          <span>@showgi249</span>
+          <span class="verified" title="حساب رسمي">✓</span>
+        </div>
 
-    <!-- =========================
-         Ticker
-         ========================= -->
+        <p class="intro">
+          مرحباً بك في موقعي الرسمي. هنا تجد روابط حساباتي ومحتواي
+          وكل ما يتعلق بهويتي الرقمية في مكان واحد.
+        </p>
 
-    <div class="ticker">
-      <div class="ticker-inner">
+        <div class="actions">
+          <a class="btn primary" href="#social">استكشف حساباتي</a>
+          <button class="btn" type="button" onclick="copyUsername()">نسخ @showgi249</button>
+        </div>
+      </header>
 
-        <span>PYTHON</span>
-        <span>WEB</span>
-        <span>LINUX</span>
-        <span>CONTENT</span>
-        <span>IDEAS</span>
-        <span>SUDAN</span>
-
-        <span>PYTHON</span>
-        <span>WEB</span>
-        <span>LINUX</span>
-        <span>CONTENT</span>
-        <span>IDEAS</span>
-        <span>SUDAN</span>
-
-      </div>
-    </div>
-
-
-    <!-- =========================
-         About
-         ========================= -->
-
-    <section id="about">
-
-      <div class="container">
-
+      <section id="social">
         <div class="section-title">
+          <div>
+            <h2>حساباتي الرسمية</h2>
+            <p>جميع الروابط في مكان واحد</p>
+          </div>
+        </div>
 
-          <small>01 — ABOUT</small>
+        <div class="grid">
 
-          <h2>
-            من أنا؟
-          </h2>
+          <!-- عدّل الروابط التالية وضع روابط حساباتك الحقيقية -->
+          <a class="card social" href="https://www.tiktok.com/@showgi249" target="_blank" rel="noopener noreferrer">
+            <div class="icon">TT</div>
+            <div>
+              <h3>TikTok</h3>
+              <p>@showgi249</p>
+            </div>
+            <span class="arrow">←</span>
+          </a>
 
+          <a class="card social" href="https://www.facebook.com/showgi249" target="_blank" rel="noopener noreferrer">
+            <div class="icon">f</div>
+            <div>
+              <h3>Facebook</h3>
+              <p>showgi249</p>
+            </div>
+            <span class="arrow">←</span>
+          </a>
+
+          <a class="card social" href="https://x.com/showgi249" target="_blank" rel="noopener noreferrer">
+            <div class="icon">𝕏</div>
+            <div>
+              <h3>X / Twitter</h3>
+              <p>@showgi249</p>
+            </div>
+            <span class="arrow">←</span>
+          </a>
+
+          <a class="card social" href="https://www.instagram.com/showgi249/" target="_blank" rel="noopener noreferrer">
+            <div class="icon">IG</div>
+            <div>
+              <h3>Instagram</h3>
+              <p>@showgi249</p>
+            </div>
+            <span class="arrow">←</span>
+          </a>
+
+          <a class="card social" href="https://www.youtube.com/@showgi249" target="_blank" rel="noopener noreferrer">
+            <div class="icon">YT</div>
+            <div>
+              <h3>YouTube</h3>
+              <p>@showgi249</p>
+            </div>
+            <span class="arrow">←</span>
+          </a>
+
+          <a class="card social" href="mailto:contact@showgi249.com">
+            <div class="icon">✉</div>
+            <div>
+              <h3>البريد الإلكتروني</h3>
+              <p>تواصل للعمل والاستفسارات</p>
+            </div>
+            <span class="arrow">←</span>
+          </a>
+
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <div>
+            <h2>عن الموقع</h2>
+            <p>هويتي الرقمية الرسمية</p>
+          </div>
         </div>
 
         <div class="about">
-
-          <div class="about-text">
-
-            <p>
-              أنا أحمد شوقي، أستخدم الإنترنت والتقنية
-              كمساحة للتجربة والتعلّم وصناعة الأفكار.
-            </p>
-
-            <p>
-              أؤمن أن التقنية ليست مجرد أدوات،
-              بل وسيلة لصناعة شيء مفيد ومؤثر.
-            </p>
-
-            <p>
-              هنا أشارك مشاريعي وأفكاري وتجربتي
-              في البرمجة وصناعة المحتوى.
-            </p>
-
-          </div>
-
-          <div class="about-card">
-
-            <strong>249</strong>
-
-            <p>
-              اسم يمثل هويتي الرقمية
-              وشغفي بالتقنية والمحتوى.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         Projects
-         ========================= -->
-
-    <section id="work">
-
-      <div class="container">
-
-        <div class="section-title">
-
-          <small>02 — PROJECTS</small>
-
-          <h2>
-            المشاريع
-          </h2>
-
-          <p>
-            بعض المساحات والمشاريع التي أعمل عليها.
-          </p>
-
-        </div>
-
-
-        <div class="cards">
-
           <article class="card">
-
-            <div class="card-number">
-              01
-            </div>
-
-            <h3>
-              Python Lab
-            </h3>
-
+            <h3>أهلاً بك 👋</h3>
             <p>
-              تجارب ومشاريع باستخدام Python
-              للتعلم وبناء أفكار جديدة.
+              هذا الموقع هو نقطة الوصول الرئيسية إلى حسابات
+              <strong>showgi249</strong>. صمّمته ليكون بسيطاً وسريعاً
+              وسهل الاستخدام، مع جمع الروابط المهمة في صفحة واحدة.
             </p>
-
+            <div class="facts">
+              <div class="fact"><span>الموقع</span><strong>showgi249.com</strong></div>
+              <div class="fact"><span>اسم المستخدم</span><strong>@showgi249</strong></div>
+              <div class="fact"><span>اللغة</span><strong>العربية</strong></div>
+            </div>
           </article>
 
-
-          <article class="card">
-
-            <div class="card-number">
-              02
-            </div>
-
-            <h3>
-              Showgi Speaks
-            </h3>
-
+          <article class="card" id="contact">
+            <h3>تواصل معي</h3>
             <p>
-              مساحة للأفكار والآراء والتجارب
-              التي تستحق المشاركة.
+              للاستفسارات أو التعاون، يمكنك التواصل من خلال البريد
+              الإلكتروني أو عبر حساباتي الرسمية.
             </p>
 
-          </article>
-
-
-          <article class="card">
-
-            <div class="card-number">
-              03
+            <div class="links" style="margin-top:16px">
+              <a class="link-card" href="mailto:contact@showgi249.com">
+                <span class="icon">✉</span>
+                <span>إرسال بريد إلكتروني</span>
+              </a>
+              <a class="link-card" href="#social">
+                <span class="icon">↗</span>
+                <span>مشاهدة جميع الحسابات</span>
+              </a>
             </div>
-
-            <h3>
-              Web Experiments
-            </h3>
-
-            <p>
-              تجارب في تصميم وتطوير المواقع
-              وتطبيقات الويب.
-            </p>
-
           </article>
-
         </div>
+      </section>
+    </main>
 
-      </div>
+    <footer>
+      <div class="footer-line"></div>
+      <p>© <span id="year"></span> أحمد شوقي — showgi249. جميع الحقوق محفوظة.</p>
+    </footer>
+  </div>
 
-    </section>
+  <div class="toast" id="toast">تم نسخ اسم المستخدم ✓</div>
 
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    <!-- =========================
-         Ideas
-         ========================= -->
+    function copyUsername(){
+      const username = "@showgi249";
 
-    <section id="ideas">
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(username).then(showToast);
+      }else{
+        const input = document.createElement("input");
+        input.value = username;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+        showToast();
+      }
+    }
 
-      <div class="container">
-
-        <div class="section-title">
-
-          <small>03 — IDEAS</small>
-
-          <h2>
-            أفكار تستحق التفكير
-          </h2>
-
-        </div>
-
-
-        <
+    function showToast(){
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+  </script>
+</body>
+</html>
