@@ -1,644 +1,143 @@
-/* =========================
-   SHOWGI249
-   Main JavaScript
-   + Plausible Analytics
-========================= */
+/* ==========================================
+   SHOWGI249 — CONTENT CENTER
+   Front-end content engine
+   ========================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+const postsContainer = document.getElementById("posts");
 
-  /* =========================
-     Plausible Helper
-  ========================== */
+const typeButtons = document.querySelectorAll(
+  ".filters button"
+);
 
-  function track(eventName, props = {}, interactive = true) {
+const platformButtons = document.querySelectorAll(
+  ".platform-filters button"
+);
 
-    if (typeof window.plausible !== "function") {
-      return;
-    }
 
-    window.plausible(eventName, {
-      props: props,
-      interactive: interactive
-    });
+/* ==========================================
+   إعدادات الحسابات
+   ========================================== */
 
+const socialAccounts = {
+
+  instagram: {
+    name: "Instagram",
+    username: "@showgi249",
+    url: "https://www.instagram.com/showgi249"
+  },
+
+  tiktok: {
+    name: "TikTok",
+    username: "@showgi249",
+    url: "https://www.tiktok.com/@showgi249"
+  },
+
+  youtube: {
+    name: "YouTube",
+    username: "@showgi249",
+    url: "https://youtube.com/@showgi249"
+  },
+
+  facebook: {
+    name: "Facebook",
+    username: "showgi249",
+    url: "https://www.facebook.com/showgi249"
+  },
+
+  threads: {
+    name: "Threads",
+    username: "@showgi249",
+    url: "https://www.threads.com/@showgi249"
+  },
+
+  snapchat: {
+    name: "Snapchat",
+    username: "showgi249",
+    url: "https://www.snapchat.com/add/showgi249"
+  },
+
+  x: {
+    name: "X",
+    username: "@showgi249",
+    url: "https://x.com/showgi249"
+  },
+
+  telegram: {
+    name: "Telegram",
+    username: "@showgi249",
+    url: "https://t.me/showgi249"
   }
 
-
-  /* =========================
-     Mobile Navigation
-  ========================== */
-
-  const nav = document.querySelector(".nav");
-  const menu = document.querySelector(".menu-btn");
-  const navLinks = document.querySelector(".nav-links");
-
-  if (menu && navLinks) {
-
-    menu.addEventListener("click", () => {
-
-      const isOpen =
-        navLinks.classList.toggle("open");
-
-      menu.setAttribute(
-        "aria-expanded",
-        String(isOpen)
-      );
-
-      menu.setAttribute(
-        "aria-label",
-        isOpen
-          ? "إغلاق القائمة"
-          : "فتح القائمة"
-      );
+};
 
 
-      track(
-        isOpen
-          ? "Menu Open"
-          : "Menu Close"
-      );
+/* ==========================================
+   بيانات المحتوى
+   ==========================================
 
-    });
+   لاحقًا سيأتي هذا المحتوى تلقائيًا
+   من Backend / APIs الخاصة بالمنصات.
 
+   لا نضع API Keys هنا.
+   ========================================== */
 
-    /* Close menu after clicking a link */
-
-    navLinks
-      .querySelectorAll("a")
-      .forEach(link => {
-
-        link.addEventListener("click", () => {
-
-          const destination =
-            link.getAttribute("href") || "";
-
-          const text =
-            link.textContent.trim();
-
-          track("Navigation Click", {
-            link: text,
-            destination: destination
-          });
-
-          navLinks.classList.remove("open");
-
-          menu.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-          menu.setAttribute(
-            "aria-label",
-            "فتح القائمة"
-          );
-
-        });
-
-      });
-
-  }
+let posts = [];
 
 
-  /* =========================
-     Reveal Animation
-  ========================== */
+/* ==========================================
+   حالة الفلاتر
+   ========================================== */
 
-  const revealElements =
-    document.querySelectorAll(".reveal");
+let activeType = "all";
+let activePlatform = "all";
 
 
-  if ("IntersectionObserver" in window) {
+/* ==========================================
+   تحميل المحتوى من Backend
+   ========================================== */
 
-    const observer =
-      new IntersectionObserver(
-        entries => {
+async function loadRemotePosts() {
 
-          entries.forEach(entry => {
+  try {
 
-            if (entry.isIntersecting) {
-
-              entry.target.classList.add("show");
-
-              observer.unobserve(
-                entry.target
-              );
-
-            }
-
-          });
-
-        },
-        {
-          threshold: 0.12
+    const response = await fetch(
+      "/api/posts",
+      {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
         }
-      );
-
-
-    revealElements.forEach(element => {
-      observer.observe(element);
-    });
-
-  } else {
-
-    revealElements.forEach(element => {
-      element.classList.add("show");
-    });
-
-  }
-
-
-  /* =========================
-     Reading Progress
-  ========================== */
-
-  const progress =
-    document.querySelector(".progress");
-
-
-  function updateProgress() {
-
-    if (!progress) {
-      return;
-    }
-
-    const documentHeight =
-      document.documentElement.scrollHeight;
-
-    const windowHeight =
-      window.innerHeight;
-
-    const scrollableHeight =
-      documentHeight - windowHeight;
-
-
-    if (scrollableHeight <= 0) {
-
-      progress.style.width = "100%";
-
-      return;
-
-    }
-
-
-    const percentage =
-      (window.scrollY / scrollableHeight) * 100;
-
-
-    progress.style.width =
-      Math.min(
-        100,
-        Math.max(0, percentage)
-      ) + "%";
-
-  }
-
-
-  window.addEventListener(
-    "scroll",
-    updateProgress,
-    { passive: true }
-  );
-
-  window.addEventListener(
-    "resize",
-    updateProgress
-  );
-
-  updateProgress();
-
-
-  /* =========================
-     Scroll Depth Tracking
-  ========================== */
-
-  const scrollMilestones = [
-    25,
-    50,
-    75,
-    90,
-    100
-  ];
-
-  const reachedMilestones =
-    new Set();
-
-
-  function trackScrollDepth() {
-
-    const scrollTop =
-      window.scrollY;
-
-    const documentHeight =
-      document.documentElement.scrollHeight;
-
-    const windowHeight =
-      window.innerHeight;
-
-    const scrollableHeight =
-      documentHeight - windowHeight;
-
-
-    if (scrollableHeight <= 0) {
-      return;
-    }
-
-
-    const percentage =
-      Math.round(
-        (scrollTop / scrollableHeight) * 100
-      );
-
-
-    scrollMilestones.forEach(
-      milestone => {
-
-        if (
-          percentage >= milestone &&
-          !reachedMilestones.has(milestone)
-        ) {
-
-          reachedMilestones.add(
-            milestone
-          );
-
-          track(
-            "Scroll Depth",
-            {
-              percentage: String(milestone)
-            },
-            false
-          );
-
-        }
-
       }
     );
 
-  }
+    if (!response.ok) {
+      throw new Error("API unavailable");
+    }
 
+    const data = await response.json();
 
-  window.addEventListener(
-    "scroll",
-    trackScrollDepth,
-    { passive: true }
-  );
+    if (Array.isArray(data)) {
 
-
-  /* =========================
-     Section View Tracking
-  ========================== */
-
-  const sections =
-    document.querySelectorAll(
-      "main section[id]"
-    );
-
-  const viewedSections =
-    new Set();
-
-
-  if ("IntersectionObserver" in window) {
-
-    const sectionObserver =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (
-              entry.isIntersecting &&
-              !viewedSections.has(
-                entry.target.id
-              )
-            ) {
-
-              const sectionId =
-                entry.target.id;
-
-              viewedSections.add(
-                sectionId
-              );
-
-
-              track(
-                "Section View",
-                {
-                  section: sectionId
-                },
-                false
-              );
-
-            }
-
-          });
-
-        },
-        {
-          threshold: 0.35
-        }
-      );
-
-
-    sections.forEach(section => {
-      sectionObserver.observe(section);
-    });
-
-  }
-
-
-  /* =========================
-     Project Tracking
-  ========================== */
-
-  document
-    .querySelectorAll("#work .project")
-    .forEach((project, index) => {
-
-      project.addEventListener(
-        "click",
-        () => {
-
-          const title =
-            project
-              .querySelector("h3")
-              ?.textContent
-              .trim()
-              || `Project ${index + 1}`;
-
-
-          track(
-            "Project Click",
-            {
-              project: title
-            }
-          );
-
-        }
-      );
-
-    });
-
-
-  /* =========================
-     Idea Tracking
-  ========================== */
-
-  document
-    .querySelectorAll("#ideas .idea")
-    .forEach((idea, index) => {
-
-      idea.addEventListener(
-        "click",
-        () => {
-
-          const title =
-            idea
-              .querySelector("h3")
-              ?.textContent
-              .trim()
-              || `Idea ${index + 1}`;
-
-
-          track(
-            "Idea Interaction",
-            {
-              idea: title
-            }
-          );
-
-        }
-      );
-
-    });
-
-
-  /* =========================
-     Social Links
-  ========================== */
-
-  const socialDomains = {
-    "instagram.com": "Instagram",
-    "x.com": "X",
-    "twitter.com": "X",
-    "t.me": "Telegram",
-    "threads.com": "Threads",
-    "youtube.com": "YouTube",
-    "snapchat.com": "Snapchat"
-  };
-
-
-  document
-    .querySelectorAll('a[href]')
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          const href =
-            link.href || "";
-
-          let url;
-
-          try {
-            url = new URL(href);
-          } catch {
-            return;
-          }
-
-
-          const hostname =
-            url.hostname
-              .replace("www.", "");
-
-
-          const platform =
-            socialDomains[hostname];
-
-
-          if (platform) {
-
-            track(
-              "Social Click",
-              {
-                platform: platform
-              }
-            );
-
-          }
-
-        }
-      );
-
-    });
-
-
-  /* =========================
-     Email Tracking
-  ========================== */
-
-  document
-    .querySelectorAll(
-      'a[href^="mailto:"]'
-    )
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          track(
-            "Email Click",
-            {
-              method: "mailto"
-            }
-          );
-
-        }
-      );
-
-    });
-
-
-  /* =========================
-     CTA / Button Tracking
-  ========================== */
-
-  document
-    .querySelectorAll(
-      "a.btn, button"
-    )
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const label =
-            button.textContent
-              .trim()
-              .replace(/\s+/g, " ");
-
-
-          if (label) {
-
-            track(
-              "Button Click",
-              {
-                button: label
-              }
-            );
-
-          }
-
-        }
-      );
-
-    });
-
-
-  /* =========================
-     Time Engagement
-  ========================== */
-
-  const timeMilestones = [
-    10,
-    30,
-    60,
-    180
-  ];
-
-  const reachedTimes =
-    new Set();
-
-
-  timeMilestones.forEach(
-    seconds => {
-
-      setTimeout(() => {
-
-        if (
-          !reachedTimes.has(seconds)
-        ) {
-
-          reachedTimes.add(seconds);
-
-          track(
-            "Engagement Time",
-            {
-              seconds: String(seconds)
-            },
-            false
-          );
-
-        }
-
-      }, seconds * 1000);
+      posts = data;
 
     }
-  );
 
+  } catch (error) {
 
-  /* =========================
-     Current Year
-  ========================== */
+    /*
+      GitHub Pages حاليًا لا يملك Backend.
 
-  const year =
-    document.getElementById("year");
+      لذلك الموقع يعمل طبيعيًا حتى يتم
+      إنشاء Backend وربطه لاحقًا.
+    */
 
-
-  if (year) {
-
-    year.textContent =
-      new Date().getFullYear();
+    posts = [];
 
   }
 
-
-  /* =========================
-     Close Mobile Menu
-     When Clicking Outside
-  ========================== */
-
-  document.addEventListener(
-    "click",
-    event => {
-
-      if (
-        !nav ||
-        !menu ||
-        !navLinks
-      ) {
-        return;
-      }
+  renderPosts();
+}
 
 
-      const clickedInsideNav =
-        nav.contains(event.target);
-
-
-      if (
-        !clickedInsideNav &&
-        navLinks.classList.contains("open")
-      ) {
-
-        navLinks.classList.remove(
-          "open"
-        );
-
-        menu.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-        menu.setAttribute(
-          "aria-label",
-          "فتح القائمة"
-        );
-
-      }
-
-    }
-  );
-
-});
+/* ==========================================
+  
