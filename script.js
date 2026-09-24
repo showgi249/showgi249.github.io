@@ -101,7 +101,7 @@ async function loadRemotePosts() {
   try {
 
     const response = await fetch(
-      "/api/posts",
+      "./content.json",
       {
         method: "GET",
         headers: {
