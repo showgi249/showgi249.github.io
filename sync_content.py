@@ -30,7 +30,10 @@ def get_youtube_videos():
     data = response.json()
 
     if not data.get("items"):
-        return []
+    print("YouTube channel not found.")
+    print("Handle used:", handle)
+    print("API response:", data)
+    return []
 
     uploads_playlist = data["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
