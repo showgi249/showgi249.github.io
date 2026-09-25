@@ -1,79 +1,172 @@
+"""
+SHOWGI249 — مزامنة موحدة للمحتوى
+يجمع: YouTube + Telegram
+يكتب النتيجة في: content.json
+"""
+
 import os
+import re
 import json
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+
 import requests
+from bs4 import BeautifulSoup
 
-API_KEY = os.getenv("YOUTUBE_API_KEY")
-HANDLE = os.getenv("YOUTUBE_HANDLE", "showgi249")
+# ============ الإعدادات ============
+YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+YOUTUBE_HANDLE = os.getenv("YOUTUBE_HANDLE", "showgi249")
+TELEGRAM_CHANNEL = os.getenv("TELEGRAM_CHANNEL", "showgi249")
 
-def get_youtube_videos():
-    if not API_KEY:
-        print("خطأ: لم يتم العثور على YOUTUBE_API_KEY في المتغيرات البيئية (Secrets).")
+OUTPUT = Path("content.json")
+MAX_YOUTUBE = 15
+TIMEOUT = 15
+RETRIES = 3
+
+
+def log(msg: str) -> None:
+    print(f"[{datetime.now(timezone.utc).isoformat(timespec='seconds')}] {msg}", flush=True)
+
+
+def safe_get(url, params=None, headers=None):
+    for attempt in range(1, RETRIES + 1):
+        try:
+            r = requests.get(url, params=params, headers=headers, timeout=TIMEOUT)
+            if r.status_code == 200:
+                return r
+            log(f"⚠️  محاولة {attempt}: HTTP {r.status_code} — {r.text[:150]}")
+        except requests.RequestException as e:
+            log(f"⚠️  محاولة {attempt}: {e}")
+        time.sleep(2 ** attempt)
+    return None
+
+
+# ============ YouTube ============
+def fetch_youtube():
+    if not YOUTUBE_API_KEY:
+        log("❌ YOUTUBE_API_KEY غير موجود في Secrets.")
         return []
 
-    # ضمان وجود علامة @ في اسم مقبض القناة
-    clean_handle = HANDLE if HANDLE.startswith("@") else f"@{HANDLE}"
-    
-    # 1. جلب معرف قائمة الفيديوهات المرفوعة (Uploads Playlist)
-    url = "https://www.googleapis.com/youtube/v3/channels"
-    params = {
-        "part": "contentDetails",
-        "forHandle": clean_handle,
-        "key": API_KEY
-    }
-    
-    response = requests.get(url, params=params)
-    
-    if response.status_code != 200:
-        print(f"خطأ في الطلب: رمز الحالة {response.status_code}")
-        print("تفاصيل الاستجابة:", response.text)
+    handle = YOUTUBE_HANDLE if YOUTUBE_HANDLE.startswith("@") else f"@{YOUTUBE_HANDLE}"
+    log(f"📡 جلب بيانات قناة YouTube: {handle}")
+
+    r = safe_get(
+        "https://www.googleapis.com/youtube/v3/channels",
+        {"part": "contentDetails", "forHandle": handle, "key": YOUTUBE_API_KEY},
+    )
+    if not r:
         return []
 
-    data = response.json()
-
+    data = r.json()
     if not data.get("items"):
-        print(f"لم يتم العثور على قناة للمقبض: {clean_handle}")
-        print("استجابة الـ API الكاملة:", data)
+        log(f"❌ لا توجد قناة للمقبض {handle}")
         return []
 
-    uploads_playlist = data["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+    playlist = data["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+    log(f"✅ وجدت القناة. Uploads Playlist: {playlist}")
 
-    # 2. جلب أحدث الفيديوهات من قائمة التشغيل
-    playlist_url = "https://www.googleapis.com/youtube/v3/playlistItems"
-    playlist_params = {
-        "part": "snippet",
-        "playlistId": uploads_playlist,
-        "maxResults": 10,
-        "key": API_KEY
-    }
-
-    playlist_response = requests.get(playlist_url, params=playlist_params)
-    if playlist_response.status_code != 200:
-        print(f"خطأ في جلب فيديوهات القائمة: {playlist_response.text}")
+    r = safe_get(
+        "https://www.googleapis.com/youtube/v3/playlistItems",
+        {"part": "snippet", "playlistId": playlist, "maxResults": MAX_YOUTUBE, "key": YOUTUBE_API_KEY},
+    )
+    if not r:
         return []
 
-    playlist_data = playlist_response.json()
     videos = []
-
-    for item in playlist_data.get("items", []):
-        snippet = item.get("snippet", {})
+    for item in r.json().get("items", []):
+        sn = item.get("snippet", {})
+        vid = sn.get("resourceId", {}).get("videoId")
+        if not vid:
+            continue
         videos.append({
-            "title": snippet.get("title"),
-            "description": snippet.get("description"),
-            "videoId": snippet.get("resourceId", {}).get("videoId"),
-            "publishedAt": snippet.get("publishedAt"),
-            "thumbnail": snippet.get("thumbnails", {}).get("high", {}).get("url")
+            "id": vid,
+            "platform": "youtube",
+            "type": "video",
+            "title": sn.get("title", ""),
+            "text": sn.get("description", ""),
+            "url": f"https://www.youtube.com/watch?v={vid}",
+            "media": sn.get("thumbnails", {}).get("high", {}).get("url"),
+            "date": sn.get("publishedAt"),
         })
-
+    log(f"✅ YouTube: {len(videos)} فيديو")
     return videos
 
-def update_content_json():
-    videos = get_youtube_videos()
-    content = {"youtube_videos": videos}
-    
-    with open("content.json", "w", encoding="utf-8") as f:
-        json.dump(content, f, ensure_ascii=False, indent=2)
-    
-    print(f"تم تحديث content.json بنجاح وتحميل {len(videos)} فيديو.")
+
+# ============ Telegram ============
+def fetch_telegram():
+    url = f"https://t.me/s/{TELEGRAM_CHANNEL}"
+    log(f"📡 جلب قناة Telegram: {url}")
+
+    r = safe_get(url, headers={"User-Agent": "Mozilla/5.0 (compatible; SHOWGI249/1.0)"})
+    if not r:
+        return []
+
+    soup = BeautifulSoup(r.text, "html.parser")
+    posts = []
+
+    for wrap in soup.select(".tgme_widget_message_wrap"):
+        msg = wrap.select_one(".tgme_widget_message")
+        if not msg:
+            continue
+
+        post_id = msg.get("data-post", "")
+        if not post_id:
+            continue
+
+        text_el = msg.select_one(".tgme_widget_message_text")
+        text = text_el.get_text("\n", strip=True) if text_el else ""
+
+        time_el = msg.select_one("time[datetime]")
+        date = time_el["datetime"] if time_el else None
+
+        img_el = msg.select_one(".tgme_widget_message_photo_wrap")
+        media = None
+        if img_el and img_el.has_attr("style"):
+            m = re.search(r"url\(['\"]?(.*?)['\"]?\)", img_el["style"])
+            if m:
+                media = m.group(1)
+
+        is_video = bool(msg.select_one(".tgme_widget_message_video_wrap"))
+
+        posts.append({
+            "id": post_id.replace("/", "_"),
+            "platform": "telegram",
+            "type": "video" if is_video else ("image" if media else "text"),
+            "title": "",
+            "text": text,
+            "url": f"https://t.me/{post_id}",
+            "media": media,
+            "date": date,
+        })
+
+    log(f"✅ Telegram: {len(posts)} منشور")
+    return posts
+
+
+# ============ Main ============
+def main():
+    log("=" * 55)
+    log("🚀 بدء مزامنة SHOWGI249")
+    log("=" * 55)
+
+    all_posts = []
+    all_posts.extend(fetch_youtube())
+    all_posts.extend(fetch_telegram())
+
+    all_posts.sort(key=lambda p: p.get("date") or "", reverse=True)
+
+    payload = {
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "posts": all_posts,
+    }
+
+    OUTPUT.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    log(f"🎉 تم إنشاء {OUTPUT} بإجمالي {len(all_posts)} منشور")
+
 
 if __name__ == "__main__":
-    update_content_json()
+    main()
