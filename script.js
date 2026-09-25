@@ -1,152 +1,102 @@
-/* ==========================================
-   SHOWGI249 — CONTENT CENTER
-   Front-end content engine
-   ========================================== */
+/* ==========================================================
+   SHOWGI249 — محرك عرض المحتوى
+   ========================================================== */
 
 const postsContainer = document.getElementById("posts");
+const typeButtons = document.querySelectorAll(".filters button");
+const platformButtons = document.querySelectorAll(".platform-filters button");
 
-const typeButtons = document.querySelectorAll(
-  ".filters button"
-);
+let allPosts = [];
+let filterState = { type: "all", platform: "all" };
 
-const platformButtons = document.querySelectorAll(
-  ".platform-filters button"
-);
+/* ============ دوال مساعدة ============ */
 
+function escapeHtml(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
-/* ==========================================
-   إعدادات الحسابات
-   ========================================== */
+function truncate(str, max = 140) {
+  if (!str) return "";
+  if (str.length <= max) return str;
+  const cut = str.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "…";
+}
 
-const socialAccounts = {
-
-  instagram: {
-    name: "Instagram",
-    username: "@showgi249",
-    url: "https://www.instagram.com/showgi249"
-  },
-
-  tiktok: {
-    name: "TikTok",
-    username: "@showgi249",
-    url: "https://www.tiktok.com/@showgi249"
-  },
-
-  youtube: {
-    name: "YouTube",
-    username: "@showgi249",
-    url: "https://youtube.com/@showgi249"
-  },
-
-  facebook: {
-    name: "Facebook",
-    username: "showgi249",
-    url: "https://www.facebook.com/showgi249"
-  },
-
-  threads: {
-    name: "Threads",
-    username: "@showgi249",
-    url: "https://www.threads.com/@showgi249"
-  },
-
-  snapchat: {
-    name: "Snapchat",
-    username: "showgi249",
-    url: "https://www.snapchat.com/add/showgi249"
-  },
-
-  x: {
-    name: "X",
-    username: "@showgi249",
-    url: "https://x.com/showgi249"
-  },
-
-  telegram: {
-    name: "Telegram",
-    username: "@showgi249",
-    url: "https://t.me/showgi249"
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "";
+  try {
+    return d.toLocaleDateString("ar-EG", { year: "numeric", month: "short", day: "numeric" });
+  } catch {
+    return d.toISOString().split("T")[0];
   }
+}
 
-};
+function sortByDate(posts) {
+  return [...posts].sort((a, b) => {
+    const da = new Date(a.date || 0).getTime();
+    const db = new Date(b.date || 0).getTime();
+    return db - da;
+  });
+}
 
-
-/* ==========================================
-   بيانات المحتوى وحالة الفلاتر
-   ========================================== */
-
-let posts = [];
-let activeType = "all";
-let activePlatform = "all";
-
-
-/* ==========================================
-   تحميل المحتوى من Backend / content.json
-   ========================================== */
+/* ============ جلب البيانات ============ */
 
 async function loadRemotePosts() {
-
   try {
+    const res = await fetch("./content.json", {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    });
 
-    const response = await fetch(
-      "./content.json",
-      {
-        method: "GET",
-        headers: {
-          "Accept": "application/json"
-        }
-      }
-    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    if (!response.ok) {
-      throw new Error("API unavailable");
-    }
+    const data = await res.json();
+    let raw = [];
 
-    const data = await response.json();
-    let fetchedPosts = [];
-
-    // قراءة فيديوهات يوتيوب وتحويلها لشكل المنشورات
-    if (data.youtube_videos && Array.isArray(data.youtube_videos)) {
-      const ytPosts = data.youtube_videos.map(video => ({
-        id: video.videoId,
-        type: "video",
+    if (Array.isArray(data.posts)) {
+      raw = data.posts;
+    } else if (Array.isArray(data.youtube_videos)) {
+      raw = data.youtube_videos.map(v => ({
+        id: v.videoId,
         platform: "youtube",
-        title: video.title || "فيديو يوتيوب",
-        text: video.description || "",
-        url: `https://www.youtube.com/watch?v=${video.videoId}`,
-        media: video.thumbnail,
-        date: video.publishedAt
+        type: "video",
+        title: v.title || "",
+        text: v.description || "",
+        url: `https://www.youtube.com/watch?v=${v.videoId}`,
+        media: v.thumbnail,
+        date: v.publishedAt,
       }));
-      fetchedPosts = fetchedPosts.concat(ytPosts);
     } else if (Array.isArray(data)) {
-      fetchedPosts = data;
+      raw = data;
     }
 
-    posts = fetchedPosts;
-
-  } catch (error) {
-
-    console.error("خطأ في تحميل ملف البيانات:", error);
-    posts = [];
-
+    allPosts = sortByDate(raw);
+    console.log(`[SHOWGI249] تم تحميل ${allPosts.length} منشور`);
+  } catch (err) {
+    console.error("[SHOWGI249] فشل تحميل المحتوى:", err);
+    allPosts = [];
   }
 
   renderPosts();
 }
 
-
-/* ==========================================
-   عرض المنشورات (Render Posts)
-   ========================================== */
+/* ============ العرض ============ */
 
 function renderPosts() {
-
   if (!postsContainer) return;
 
-  const filtered = posts.filter(post => {
-    const matchesType = activeType === "all" || post.type === activeType;
-    const matchesPlatform = activePlatform === "all" || post.platform === activePlatform;
-    return matchesType && matchesPlatform;
+  const filtered = allPosts.filter(p => {
+    const matchType = filterState.type === "all" || p.type === filterState.type;
+    const matchPlatform = filterState.platform === "all" || p.platform === filterState.platform;
+    return matchType && matchPlatform;
   });
 
   if (filtered.length === 0) {
@@ -160,57 +110,58 @@ function renderPosts() {
     return;
   }
 
-  postsContainer.innerHTML = filtered.map(post => `
-    <article class="post-card" data-platform="${post.platform}">
-      ${post.media ? `
-        <div class="post-media">
-          <a href="${post.url}" target="_blank" rel="noopener">
-            <img src="${post.media}" alt="${post.title || 'صورة المحتوى'}" loading="lazy">
-          </a>
-        </div>
-      ` : ''}
-      <div class="post-content">
-        <div class="post-meta">
-          <span class="platform-badge ${post.platform}">${post.platform.toUpperCase()}</span>
-          ${post.date ? `<time>${new Date(post.date).toLocaleDateString("ar-EG")}</time>` : ''}
-        </div>
-        ${post.title ? `<h3><a href="${post.url}" target="_blank" rel="noopener">${post.title}</a></h3>` : ''}
-        ${post.text ? `<p>${post.text.length > 120 ? post.text.substring(0, 120) + '...' : post.text}</p>` : ''}
-        <a href="${post.url}" target="_blank" rel="noopener" class="post-link">مشاهدة المحتوى ←</a>
-      </div>
-    </article>
-  `).join("");
+  postsContainer.innerHTML = filtered.map(post => {
+    const title = post.title ? escapeHtml(post.title) : "";
+    const text = post.text ? escapeHtml(truncate(post.text, 140)) : "";
+    const date = formatDate(post.date);
+    const url = escapeHtml(post.url || "#");
+    const platform = escapeHtml(post.platform || "unknown");
 
+    const mediaHtml = post.media
+      ? `<div class="post-media">
+           <a href="${url}" target="_blank" rel="noopener noreferrer">
+             <img src="${escapeHtml(post.media)}" alt="${title || 'محتوى'}" loading="lazy">
+           </a>
+         </div>`
+      : "";
+
+    return `
+      <article class="post-card" data-platform="${platform}">
+        ${mediaHtml}
+        <div class="post-body">
+          <div class="post-meta">
+            <span class="platform-badge ${platform}">${platform}</span>
+            ${date ? `<time datetime="${escapeHtml(post.date)}">${date}</time>` : ""}
+          </div>
+          ${title ? `<h3 class="post-title"><a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a></h3>` : ""}
+          ${text ? `<p class="post-text">${text}</p>` : ""}
+          <a class="post-link" href="${url}" target="_blank" rel="noopener noreferrer">مشاهدة المحتوى ←</a>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
+/* ============ الفلاتر ============ */
 
-/* ==========================================
-   إدارة الأحداث والتفاعل مع الفلاتر
-   ========================================== */
-
-typeButtons.forEach(button => {
-  button.addEventListener("click", () => {
+typeButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
     typeButtons.forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
-    activeType = button.getAttribute("data-type") || "all";
+    btn.classList.add("active");
+    filterState.type = btn.dataset.type || "all";
     renderPosts();
   });
 });
 
-platformButtons.forEach(button => {
-  button.addEventListener("click", () => {
+platformButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
     platformButtons.forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
-    activePlatform = button.getAttribute("data-platform") || "all";
+    btn.classList.add("active");
+    filterState.platform = btn.dataset.platform || "all";
     renderPosts();
   });
 });
 
+/* ============ التشغيل ============ */
 
-/* ==========================================
-   التشغيل المباشر عند فتح الصفحة
-   ========================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadRemotePosts();
-});
+document.addEventListener("DOMContentLoaded", loadRemotePosts);
