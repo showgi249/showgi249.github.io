@@ -42,8 +42,10 @@
       <span class="badge">SHOWGI249</span>
       <h1>أحمد شوقي</h1>
       <p>أفكار. تقنية. تأثير. = الرسالة.</p>
-      <div class="hero-buttons">
+      <!-- تم إضافة زر الحسابات البنكية هنا -->
+      <div class="hero-buttons" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
         <a href="#content" class="primary-btn">استكشف المحتوى</a>
+        <a href="#bank" class="primary-btn" style="background: #2563eb; border-color: #2563eb;">💳 الحسابات البنكية</a>
         <a href="#social" class="secondary-btn">حساباتي</a>
       </div>
     </div>
@@ -163,11 +165,70 @@
     </div>
   </section>
 
+  <!-- BANK ACCOUNTS (قسم جديد) -->
+  <section id="bank" class="section bank-accounts">
+    <div class="section-heading">
+      <span>05</span>
+      <div>
+        <h2>الحسابات البنكية</h2>
+        <p>يمكنك دعم المحتوى عبر التحويل البنكي.</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 900px; margin: 0 auto;">
+      
+      <!-- بنكك (Bankak) -->
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
+        <img src="bnkak.ico" alt="بنكك" style="width: 48px; height: 48px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 1.1rem;">بنكك (Bankak)</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">9702214</span>
+        <button onclick="copyToClipboard('9702214')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      </div>
+
+      <!-- فوروارد (Forward) -->
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
+        <img src="forward.ico" alt="Forward" style="width: 48px; height: 48px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 1.1rem;">Forward</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">52309297</span>
+        <button onclick="copyToClipboard('52309297')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      </div>
+
+      <!-- أو كاش (O Cash) -->
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
+        <img src="O%20cash.ico" alt="O Cash" style="width: 48px; height: 48px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 1.1rem;">O Cash</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">1796570</span>
+        <button onclick="copyToClipboard('1796570')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      </div>
+
+      <!-- ساحل (Sahil) -->
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
+        <img src="sahil.ico" alt="Sahil" style="width: 48px; height: 48px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 1.1rem;">Sahil</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">0777623</span>
+        <button onclick="copyToClipboard('0777623')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      </div>
+
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div>SHOWGI249</div>
     <p>© 2026 أحمد شوقي — جميع الحقوق محفوظة</p>
   </footer>
+
+  <!-- سكريبت النسخ -->
+  <script>
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(function() {
+        alert('✅ تم نسخ الرقم بنجاح: ' + text);
+      }).catch(function(err) {
+        alert('❌ حدث خطأ أثناء النسخ. يرجى نسخ الرقم يدوياً.');
+        console.error('Copy failed: ', err);
+      });
+    }
+  </script>
 
   <script src="script.js"></script>
 </body>
