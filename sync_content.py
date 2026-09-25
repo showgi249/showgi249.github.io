@@ -7,13 +7,13 @@ HANDLE = os.getenv("YOUTUBE_HANDLE", "showgi249")
 
 def get_youtube_videos():
     if not API_KEY:
-        print("خطأ: لم يتم ضبط YOUTUBE_API_KEY في إعدادات Secrets.")
+        print("خطأ: لم يتم العثور على YOUTUBE_API_KEY في المتغيرات البيئية (Secrets).")
         return []
 
-    # التأكد من وجود علامة @ في بداية اسم المقبض (Handle)
+    # ضمان وجود علامة @ في اسم مقبض القناة
     clean_handle = HANDLE if HANDLE.startswith("@") else f"@{HANDLE}"
     
-    # 1. جلب معرّف القائمة التشغيلية (Uploads Playlist) باستخدام forHandle
+    # 1. جلب معرف قائمة الفيديوهات المرفوعة (Uploads Playlist)
     url = "https://www.googleapis.com/youtube/v3/channels"
     params = {
         "part": "contentDetails",
@@ -24,19 +24,20 @@ def get_youtube_videos():
     response = requests.get(url, params=params)
     
     if response.status_code != 200:
-        print(f"فشل الطلب مع رمز الحالة {response.status_code}: {response.text}")
+        print(f"خطأ في الطلب: رمز الحالة {response.status_code}")
+        print("تفاصيل الاستجابة:", response.text)
         return []
 
     data = response.json()
 
     if not data.get("items"):
-        print(f"لم يتم العثور على قناة يوتيوب بالمقبض: {clean_handle}")
-        print("استجابة الـ API:", data)
+        print(f"لم يتم العثور على قناة للمقبض: {clean_handle}")
+        print("استجابة الـ API الكاملة:", data)
         return []
 
     uploads_playlist = data["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
-    # 2. جلب آخر 10 فيديوهات من قائمة التشغيل
+    # 2. جلب أحدث الفيديوهات من قائمة التشغيل
     playlist_url = "https://www.googleapis.com/youtube/v3/playlistItems"
     playlist_params = {
         "part": "snippet",
@@ -47,7 +48,7 @@ def get_youtube_videos():
 
     playlist_response = requests.get(playlist_url, params=playlist_params)
     if playlist_response.status_code != 200:
-        print(f"فشل جلب فيديوهات القائمة: {playlist_response.text}")
+        print(f"خطأ في جلب فيديوهات القائمة: {playlist_response.text}")
         return []
 
     playlist_data = playlist_response.json()
@@ -72,7 +73,7 @@ def update_content_json():
     with open("content.json", "w", encoding="utf-8") as f:
         json.dump(content, f, ensure_ascii=False, indent=2)
     
-    print(f"تمت تحديث content.json بنجاح وبعدد {len(videos)} فيديو.")
+    print(f"تم تحديث content.json بنجاح وتحميل {len(videos)} فيديو.")
 
 if __name__ == "__main__":
     update_content_json()
