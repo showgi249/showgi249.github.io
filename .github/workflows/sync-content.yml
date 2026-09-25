@@ -5,12 +5,17 @@ on:
   schedule:
     - cron: "0 */6 * * *"
 
+concurrency:
+  group: sync-content
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: تحميل المستودع
@@ -21,19 +26,19 @@ jobs:
       - name: إعداد Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.12"
 
       - name: تثبيت المتطلبات
         run: |
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests beautifulsoup4
 
       - name: مزامنة المحتوى
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           YOUTUBE_HANDLE: showgi249
-        run: |
-          python sync_content.py
+          TELEGRAM_CHANNEL: showgi249
+        run: python sync_content.py
 
       - name: حفظ المحتوى المحدث
         run: |
@@ -41,4 +46,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull origin main --rebase
           git add content.json
-          git diff --cached --quiet || (git commit -m "Update SHOWGI249 content" && git push origin main)
+          if git diff --cached --quiet; then
+            echo "ℹ️ لا توجد تغييرات."
+          else
+            git commit -m "chore: update SHOWGI249 content [skip ci]"
+            git push origin main
+          fi
