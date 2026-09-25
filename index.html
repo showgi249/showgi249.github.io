@@ -165,7 +165,7 @@
     </div>
   </section>
 
-  <!-- BANK ACCOUNTS (قسم جديد) -->
+  <!-- BANK ACCOUNTS -->
   <section id="bank" class="section bank-accounts">
     <div class="section-heading">
       <span>05</span>
@@ -175,38 +175,39 @@
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; max-width: 900px; margin: 0 auto;">
+    <!-- تم تصغير البطاقات وتقريبها من بعضها -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-width: 480px; margin: 0 auto;">
       
       <!-- بنكك (Bankak) -->
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
-        <img src="bnkak.ico" alt="بنكك" style="width: 48px; height: 48px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 1.1rem;">بنكك (Bankak)</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">9702214</span>
-        <button onclick="copyToClipboard('9702214')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
+        <img src="bnkak.ico" alt="بنكك" style="width: 36px; height: 36px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 0.85rem;">بنكك</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">9702214</span>
+        <button onclick="copyToClipboard('9702214')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
       <!-- فوروارد (Forward) -->
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
-        <img src="forward.ico" alt="Forward" style="width: 48px; height: 48px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 1.1rem;">Forward</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">52309297</span>
-        <button onclick="copyToClipboard('52309297')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
+        <img src="forward.ico" alt="Forward" style="width: 36px; height: 36px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 0.85rem;">Forward</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">52309297</span>
+        <button onclick="copyToClipboard('52309297')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
       <!-- أو كاش (O Cash) -->
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
-        <img src="O%20cash.ico" alt="O Cash" style="width: 48px; height: 48px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 1.1rem;">O Cash</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">1796570</span>
-        <button onclick="copyToClipboard('1796570')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
+        <img src="O%20cash.ico" alt="O Cash" style="width: 36px; height: 36px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 0.85rem;">O Cash</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">1796570</span>
+        <button onclick="copyToClipboard('1796570')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
       <!-- ساحل (Sahil) -->
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;">
-        <img src="sahil.ico" alt="Sahil" style="width: 48px; height: 48px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 1.1rem;">Sahil</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 1.2rem; letter-spacing: 1px; background: #0d1017; padding: 8px 15px; border-radius: 6px; width: 100%;">0777623</span>
-        <button onclick="copyToClipboard('0777623')" style="background: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; transition: 0.3s;">📋 نسخ الرقم</button>
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
+        <img src="sahil.ico" alt="Sahil" style="width: 36px; height: 36px; object-fit: contain;">
+        <strong style="color: #fff; font-size: 0.85rem;">Sahil</strong>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">0777623</span>
+        <button onclick="copyToClipboard('0777623')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
     </div>
