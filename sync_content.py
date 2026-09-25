@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: تحميل المستودع
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: إعداد Python
         uses: actions/setup-python@v5
@@ -37,7 +39,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull origin main --rebase
           git add content.json
-          git diff --cached --quiet || git commit -m "Update SHOWGI249 content"
-          git pull --rebase origin main
-          git push origin main
+          git diff --cached --quiet || (git commit -m "Update SHOWGI249 content" && git push origin main)
