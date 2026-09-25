@@ -33,4 +33,4 @@ jobs:
           git add content.json
           git diff --cached --quiet || git commit -m "Update SHOWGI249 content"
           git pull --rebase origin main
-          git push origin main
+          git push origin main 
