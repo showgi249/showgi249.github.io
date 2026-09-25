@@ -1,44 +1,78 @@
-name: Sync SHOWGI249 Content
+import os
+import json
+import requests
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 */6 * * *"
+API_KEY = os.getenv("YOUTUBE_API_KEY")
+HANDLE = os.getenv("YOUTUBE_HANDLE", "showgi249")
 
-permissions:
-  contents: write
+def get_youtube_videos():
+    if not API_KEY:
+        print("خطأ: لم يتم ضبط YOUTUBE_API_KEY في إعدادات Secrets.")
+        return []
 
-jobs:
-  sync:
-    runs-on: ubuntu-latest
+    # التأكد من وجود علامة @ في بداية اسم المقبض (Handle)
+    clean_handle = HANDLE if HANDLE.startswith("@") else f"@{HANDLE}"
+    
+    # 1. جلب معرّف القائمة التشغيلية (Uploads Playlist) باستخدام forHandle
+    url = "https://www.googleapis.com/youtube/v3/channels"
+    params = {
+        "part": "contentDetails",
+        "forHandle": clean_handle,
+        "key": API_KEY
+    }
+    
+    response = requests.get(url, params=params)
+    
+    if response.status_code != 200:
+        print(f"فشل الطلب مع رمز الحالة {response.status_code}: {response.text}")
+        return []
 
-    steps:
-      - name: تحميل المستودع
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    data = response.json()
 
-      - name: إعداد Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
+    if not data.get("items"):
+        print(f"لم يتم العثور على قناة يوتيوب بالمقبض: {clean_handle}")
+        print("استجابة الـ API:", data)
+        return []
 
-      - name: تثبيت المتطلبات
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+    uploads_playlist = data["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
-      - name: مزامنة المحتوى
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          YOUTUBE_HANDLE: showgi249
-        run: |
-          python sync_content.py
+    # 2. جلب آخر 10 فيديوهات من قائمة التشغيل
+    playlist_url = "https://www.googleapis.com/youtube/v3/playlistItems"
+    playlist_params = {
+        "part": "snippet",
+        "playlistId": uploads_playlist,
+        "maxResults": 10,
+        "key": API_KEY
+    }
 
-      - name: حفظ المحتوى المحدث
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull origin main --rebase
-          git add content.json
-          git diff --cached --quiet || (git commit -m "Update SHOWGI249 content" && git push origin main)
+    playlist_response = requests.get(playlist_url, params=playlist_params)
+    if playlist_response.status_code != 200:
+        print(f"فشل جلب فيديوهات القائمة: {playlist_response.text}")
+        return []
+
+    playlist_data = playlist_response.json()
+    videos = []
+
+    for item in playlist_data.get("items", []):
+        snippet = item.get("snippet", {})
+        videos.append({
+            "title": snippet.get("title"),
+            "description": snippet.get("description"),
+            "videoId": snippet.get("resourceId", {}).get("videoId"),
+            "publishedAt": snippet.get("publishedAt"),
+            "thumbnail": snippet.get("thumbnails", {}).get("high", {}).get("url")
+        })
+
+    return videos
+
+def update_content_json():
+    videos = get_youtube_videos()
+    content = {"youtube_videos": videos}
+    
+    with open("content.json", "w", encoding="utf-8") as f:
+        json.dump(content, f, ensure_ascii=False, indent=2)
+    
+    print(f"تمت تحديث content.json بنجاح وبعدد {len(videos)} فيديو.")
+
+if __name__ == "__main__":
+    update_content_json()
