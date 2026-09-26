@@ -101,19 +101,22 @@
       </div>
     </div>
 
-    <!-- شبكة عرض المنشورات -->
     <div id="socialPostsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
       <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
         <p>جاري تحميل المنشورات...</p>
       </div>
     </div>
 
-    <!-- نموذج إضافة منشور -->
+    <!-- نموذج إرسال منشور عبر FormSubmit.co -->
     <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 25px; max-width: 600px; margin: 40px auto 0;">
-      <h3 style="color: #fff; margin-bottom: 15px; text-align: center;">📝 أضف منشوراً جديداً</h3>
-      <p style="color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">سيظهر منشورك فوراً لجميع الزوار.</p>
+      <h3 style="color: #fff; margin-bottom: 15px; text-align: center;">📝 اقترح منشوراً للنشر</h3>
+      <p style="color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">سيتم مراجعة منشورك قبل النشر.</p>
 
-      <form id="submissionForm" style="display: flex; flex-direction: column; gap: 15px;">
+      <form action="https://formsubmit.co/showgi249@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+        <input type="hidden" name="_subject" value="📌 منشور جديد على SHOWGI249">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
         <div>
           <label style="color: #fff; display: block; margin-bottom: 5px;">الاسم</label>
           <input type="text" name="name" required placeholder="اسمك"
@@ -138,7 +141,7 @@
             style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
         </div>
 
-        <button type="submit" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: inherit;">📤 نشر المنشور</button>
+        <button type="submit" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: inherit;">📤 إرسال للمراجعة</button>
       </form>
     </div>
   </section>
@@ -265,7 +268,6 @@
     <p>© 2026 أحمد شوقي — جميع الحقوق محفوظة</p>
   </footer>
 
-  <!-- سكريبت النسخ -->
   <script>
     function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(function() {
