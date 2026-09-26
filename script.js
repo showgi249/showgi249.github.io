@@ -3,10 +3,12 @@
    ========================================================== */
 
 const postsContainer = document.getElementById("posts");
+const socialPostsContainer = document.getElementById("socialPostsGrid");
 const typeButtons = document.querySelectorAll(".filters button");
 const platformButtons = document.querySelectorAll(".platform-filters button");
 
 let allPosts = [];
+let socialPosts = [];
 let filterState = { type: "all", platform: "all" };
 
 /* ============ دوال مساعدة ============ */
@@ -47,6 +49,25 @@ function sortByDate(posts) {
   });
 }
 
+function detectPlatform(url) {
+  if (!url) return { platform: "unknown", name: "منشور", icon: "🔗" };
+  if (url.includes("youtube.com") || url.includes("youtu.be"))
+    return { platform: "youtube", name: "YouTube", icon: "🎬" };
+  if (url.includes("twitter.com") || url.includes("x.com"))
+    return { platform: "x", name: "X (Twitter)", icon: "🐦" };
+  if (url.includes("instagram.com"))
+    return { platform: "instagram", name: "Instagram", icon: "📸" };
+  if (url.includes("tiktok.com"))
+    return { platform: "tiktok", name: "TikTok", icon: "🎵" };
+  if (url.includes("facebook.com") || url.includes("fb.com"))
+    return { platform: "facebook", name: "Facebook", icon: "👤" };
+  if (url.includes("threads.com") || url.includes("threads.net"))
+    return { platform: "threads", name: "Threads", icon: "🧵" };
+  if (url.includes("bsky.app"))
+    return { platform: "bluesky", name: "Bluesky", icon: "🦋" };
+  return { platform: "unknown", name: "منشور", icon: "🔗" };
+}
+
 /* ============ جلب البيانات ============ */
 
 async function loadRemotePosts() {
@@ -59,12 +80,10 @@ async function loadRemotePosts() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
-    let raw = [];
 
-    if (Array.isArray(data.posts)) {
-      raw = data.posts;
-    } else if (Array.isArray(data.youtube_videos)) {
-      raw = data.youtube_videos.map(v => ({
+    // المنشورات العادية لمركز المحتوى
+    if (Array.isArray(data.youtube_videos)) {
+      allPosts = data.youtube_videos.map(v => ({
         id: v.videoId,
         platform: "youtube",
         type: "video",
@@ -74,21 +93,30 @@ async function loadRemotePosts() {
         media: v.thumbnail,
         date: v.publishedAt,
       }));
-    } else if (Array.isArray(data)) {
-      raw = data;
+    } else if (Array.isArray(data.posts) && data.posts.length > 0 && data.posts[0].type) {
+      allPosts = data.posts;
+    } else {
+      allPosts = [];
     }
 
-    allPosts = sortByDate(raw);
-    console.log(`[SHOWGI249] تم تحميل ${allPosts.length} منشور`);
+    // منشورات السوشيال ميديا (قسم "منشوراتي")
+    if (Array.isArray(data.posts)) {
+      socialPosts = data.posts.filter(p => p.url && !p.type);
+    }
+
+    allPosts = sortByDate(allPosts);
+    console.log(`[SHOWGI249] محتوى: ${allPosts.length} | منشورات: ${socialPosts.length}`);
   } catch (err) {
     console.error("[SHOWGI249] فشل تحميل المحتوى:", err);
     allPosts = [];
+    socialPosts = [];
   }
 
   renderPosts();
+  renderSocialPosts();
 }
 
-/* ============ العرض ============ */
+/* ============ عرض محتوى مركز المحتوى ============ */
 
 function renderPosts() {
   if (!postsContainer) return;
@@ -104,7 +132,7 @@ function renderPosts() {
       <div class="empty-content">
         <div class="empty-icon">✦</div>
         <h3>لا يوجد محتوى لعرضه حالياً</h3>
-        <p>جرّب تغيير الفلاتر أو انتظر المزامنة التلقائية للمحتوى.</p>
+        <p>سيظهر المحتوى هنا تلقائياً عند إضافته إلى content.json</p>
       </div>
     `;
     return;
@@ -138,6 +166,38 @@ function renderPosts() {
           <a class="post-link" href="${url}" target="_blank" rel="noopener noreferrer">مشاهدة المحتوى ←</a>
         </div>
       </article>
+    `;
+  }).join("");
+}
+
+/* ============ عرض المنشورات (قسم منشوراتي) ============ */
+
+function renderSocialPosts() {
+  if (!socialPostsContainer) return;
+
+  if (socialPosts.length === 0) {
+    socialPostsContainer.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
+        <p>لا توجد منشورات حالياً. أضف روابطك في content.json</p>
+      </div>
+    `;
+    return;
+  }
+
+  socialPostsContainer.innerHTML = socialPosts.map(post => {
+    const { platform, name, icon } = detectPlatform(post.url);
+    const url = escapeHtml(post.url);
+    const title = post.title ? escapeHtml(post.title) : "";
+
+    return `
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="color: #fff; font-weight: bold; font-size: 0.9rem;">${icon} ${name}</span>
+        </div>
+        ${title ? `<p style="color: #ddd; font-size: 0.9rem; margin: 0;">${title}</p>` : ""}
+        <social-embed url="${url}" style="width: 100%; border-radius: 8px; overflow: hidden;"></social-embed>
+        <a href="${url}" target="_blank" rel="noopener" style="color: #7c3aed; text-decoration: none; font-size: 0.85rem; text-align: center; word-break: break-all;">🔗 فتح في ${name}</a>
+      </div>
     `;
   }).join("");
 }
