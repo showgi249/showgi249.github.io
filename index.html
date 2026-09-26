@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>أحمد شوقي | SHOWGI249</title>
-  <meta name="description" content="SHOWGI249 — مركز الهوية والمحتوى الرقمي لأحمد شوقي. جميع الحسابات والمحتوى في مكان واحد.">
+  <meta name="description" content="SHOWGI249 — مركز الهوية والمحتوى الرقمي لأحمد شوقي.">
   <meta name="author" content="أحمد شوقي">
   <meta name="theme-color" content="#08090d">
 
@@ -28,7 +28,6 @@
     gtag('config', 'G-Z763L98WXF');
   </script>
 
-  <!-- مكتبة social-embed لتضمين المنشورات -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/social-embed/dist/social-embed/social-embed.esm.js"></script>
 
   <link rel="stylesheet" href="style.css">
@@ -92,7 +91,7 @@
     </div>
   </section>
 
-  <!-- POSTS SECTION (قسم منشوراتي) -->
+  <!-- POSTS SECTION -->
   <section id="social-posts" class="section posts-section">
     <div class="section-heading">
       <span>02</span>
@@ -109,13 +108,13 @@
       </div>
     </div>
 
-    <!-- نموذج إرسال منشور للمراجعة -->
+    <!-- نموذج إرسال منشور -->
     <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 25px; max-width: 600px; margin: 40px auto 0;">
-      <h3 style="color: #fff; margin-bottom: 15px; text-align: center;">📝 اقترح منشوراً للنشر</h3>
-      <p style="color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">سيتم مراجعة منشورك قبل النشر.</p>
+      <h3 style="color: #fff; margin-bottom: 15px; text-align: center;">📝 أضف منشوراً جديداً</h3>
+      <p style="color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">سيظهر منشورك فوراً على الصفحة.</p>
       
       <form id="submissionForm" action="https://formspree.io/f/xjykalnl" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-        <input type="hidden" name="_subject" value="اقتراح منشور جديد لـ SHOWGI249">
+        <input type="hidden" name="_subject" value="منشور جديد لـ SHOWGI249">
         
         <div>
           <label style="color: #fff; display: block; margin-bottom: 5px;">الاسم</label>
@@ -130,18 +129,18 @@
         </div>
         
         <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">رابط المنشور المقترح</label>
+          <label style="color: #fff; display: block; margin-bottom: 5px;">رابط المنشور</label>
           <input type="url" name="post_url" required placeholder="https://..." 
             style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
         </div>
         
         <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">ملاحظات إضافية (اختياري)</label>
-          <textarea name="notes" rows="3" placeholder="أي ملاحظات حول المنشور..." 
-            style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit; resize: vertical;"></textarea>
+          <label style="color: #fff; display: block; margin-bottom: 5px;">العنوان (اختياري)</label>
+          <input type="text" name="title" placeholder="عنوان قصير للمنشور" 
+            style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
         </div>
         
-        <button type="submit" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: inherit;">📤 إرسال للمراجعة</button>
+        <button type="submit" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: inherit;">📤 نشر المنشور</button>
       </form>
     </div>
   </section>
@@ -156,7 +155,6 @@
       </div>
     </div>
 
-    <!-- Type filters -->
     <div class="filters" role="group" aria-label="تصفية حسب النوع">
       <button class="filter active" data-type="all">الكل</button>
       <button class="filter" data-type="video">🎬 فيديو</button>
@@ -164,7 +162,6 @@
       <button class="filter" data-type="text">📝 نصوص</button>
     </div>
 
-    <!-- Platform filters -->
     <div class="platform-filters" role="group" aria-label="تصفية حسب المنصة">
       <button data-platform="all" class="active">الكل</button>
       <button data-platform="youtube">YouTube</button>
@@ -177,7 +174,6 @@
       <button data-platform="x">X</button>
     </div>
 
-    <!-- Posts -->
     <div id="posts" class="posts-grid" aria-live="polite">
       <div class="empty-content">
         <div class="empty-icon">✦</div>
@@ -211,35 +207,31 @@
 
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-width: 480px; margin: 0 auto;">
       
-      <!-- بنكك (Bankak) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="bnkak.ico" alt="بنكك" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">بنكك</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">9702214</span>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">9702214</span>
         <button onclick="copyToClipboard('9702214')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
       </div>
 
-      <!-- فوروارد (Forward) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="forward.ico" alt="Forward" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">Forward</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">52309297</span>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">52309297</span>
         <button onclick="copyToClipboard('52309297')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
       </div>
 
-      <!-- أو كاش (O Cash) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="O%20cash.ico" alt="O Cash" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">O Cash</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">1796570</span>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">1796570</span>
         <button onclick="copyToClipboard('1796570')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
       </div>
 
-      <!-- ساحل (Sahil) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="sahil.ico" alt="Sahil" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">Sahil</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; letter-spacing: 0.5px; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%; overflow: hidden; text-overflow: ellipsis;">0777623</span>
+        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">0777623</span>
         <button onclick="copyToClipboard('0777623')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
       </div>
 
@@ -281,7 +273,7 @@
       navigator.clipboard.writeText(text).then(function() {
         alert('✅ تم نسخ الرقم بنجاح: ' + text);
       }).catch(function(err) {
-        alert('❌ حدث خطأ أثناء النسخ. يرجى نسخ الرقم يدوياً.');
+        alert('❌ حدث خطأ أثناء النسخ.');
         console.error('Copy failed: ', err);
       });
     }
@@ -289,4 +281,4 @@
 
   <script src="script.js"></script>
 </body>
-        </html>
+</html>
