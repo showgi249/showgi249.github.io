@@ -92,7 +92,7 @@
     </div>
   </section>
 
-  <!-- POSTS SECTION (قسم المنشورات الجديد) -->
+  <!-- POSTS SECTION -->
   <section id="posts" class="section posts-section">
     <div class="section-heading">
       <span>02</span>
@@ -220,6 +220,7 @@
 
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-width: 480px; margin: 0 auto;">
       
+      <!-- بنكك (Bankak) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="bnkak.ico" alt="بنكك" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">بنكك</strong>
@@ -227,6 +228,7 @@
         <button onclick="copyToClipboard('9702214')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
+      <!-- فوروارد (Forward) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="forward.ico" alt="Forward" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">Forward</strong>
@@ -234,6 +236,7 @@
         <button onclick="copyToClipboard('52309297')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
+      <!-- أو كاش (O Cash) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="O%20cash.ico" alt="O Cash" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">O Cash</strong>
@@ -241,6 +244,7 @@
         <button onclick="copyToClipboard('1796570')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem; transition: 0.3s;">📋 نسخ</button>
       </div>
 
+      <!-- ساحل (Sahil) -->
       <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
         <img src="sahil.ico" alt="Sahil" style="width: 36px; height: 36px; object-fit: contain;">
         <strong style="color: #fff; font-size: 0.85rem;">Sahil</strong>
@@ -301,7 +305,6 @@
         return;
       }
 
-      // التحقق من أن الرابط يبدأ بـ http
       if (!url.startsWith('http')) {
         alert('⚠️ يرجى إدخال رابط صحيح يبدأ بـ http أو https.');
         return;
@@ -315,7 +318,6 @@
     function addPostToGrid(url) {
       const grid = document.getElementById('postsGrid');
       
-      // تحديد نوع المنصة من الرابط
       let platform = 'unknown';
       let platformName = 'منشور';
       let icon = '🔗';
@@ -334,7 +336,6 @@
         platform = 'bluesky'; platformName = 'Bluesky'; icon = '🦋';
       }
 
-      // إنشاء بطاقة المنشور
       const card = document.createElement('div');
       card.style.cssText = 'background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px;';
       
@@ -344,17 +345,14 @@
           <button onclick="removePost(this)" style="background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-family: inherit;">✕</button>
         </div>
         
-        <!-- محاولة تضمين المنشور باستخدام social-embed -->
         <social-embed url="${url}" style="width: 100%; border-radius: 8px; overflow: hidden;"></social-embed>
         
-        <!-- رابط احتياطي في حال فشل التضمين -->
         <a href="${url}" target="_blank" rel="noopener" style="color: #7c3aed; text-decoration: none; font-size: 0.85rem; text-align: center; word-break: break-all;">🔗 فتح المنشور في ${platformName}</a>
       `;
       
       grid.appendChild(card);
     }
 
-    // دالة حذف منشور من الشبكة
     function removePost(btn) {
       const card = btn.closest('div[style*="border-radius: 12px"]');
       if (card) {
@@ -362,7 +360,6 @@
       }
     }
 
-    // إضافة مستمع لزر Enter في حقل الإدخال
     document.getElementById('postUrlInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         loadPost();
