@@ -1,20 +1,4 @@
 {
   "updated_at": "2026-09-27",
-  "posts": [
-    {
-      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "platform": "youtube",
-      "title": "عنوان الفيديو هنا"
-    },
-    {
-      "url": "https://x.com/showgi249/status/1234567890",
-      "platform": "x",
-      "title": "تغريدة مثيرة"
-    },
-    {
-      "url": "https://www.instagram.com/p/xxxxx/",
-      "platform": "instagram",
-      "title": "منشور انستقرام"
-    }
-  ]
+  "posts": []
 }
