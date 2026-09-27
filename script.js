@@ -1,9 +1,6 @@
 /* ==========================================================
-   SHOWGI249 — محرك عرض المحتوى + Google Sheets API
+   SHOWGI249 — محرك عرض المحتوى
    ========================================================== */
-
-// ⚠️ استبدل هذا الرابط بالرابط الذي حصلت عليه من Google Apps Script
-const API_URL = 'ضع_رابط_Google_Apps_Script_هنا';
 
 const postsContainer = document.getElementById("posts");
 const socialPostsContainer = document.getElementById("socialPostsGrid");
@@ -13,8 +10,6 @@ const platformButtons = document.querySelectorAll(".platform-filters button");
 let allPosts = [];
 let socialPosts = [];
 let filterState = { type: "all", platform: "all" };
-
-/* ============ دوال مساعدة ============ */
 
 function escapeHtml(str) {
   if (str == null) return "";
@@ -54,147 +49,19 @@ function sortByDate(posts) {
 
 function detectPlatform(url) {
   if (!url) return { platform: "unknown", name: "منشور", icon: "🔗" };
-  if (url.includes("youtube.com") || url.includes("youtu.be"))
-    return { platform: "youtube", name: "YouTube", icon: "🎬" };
-  if (url.includes("twitter.com") || url.includes("x.com"))
-    return { platform: "x", name: "X (Twitter)", icon: "🐦" };
-  if (url.includes("instagram.com"))
-    return { platform: "instagram", name: "Instagram", icon: "📸" };
-  if (url.includes("tiktok.com"))
-    return { platform: "tiktok", name: "TikTok", icon: "🎵" };
-  if (url.includes("facebook.com") || url.includes("fb.com"))
-    return { platform: "facebook", name: "Facebook", icon: "👤" };
-  if (url.includes("threads.com") || url.includes("threads.net"))
-    return { platform: "threads", name: "Threads", icon: "🧵" };
-  if (url.includes("bsky.app"))
-    return { platform: "bluesky", name: "Bluesky", icon: "🦋" };
+  if (url.includes("youtube.com") || url.includes("youtu.be")) return { platform: "youtube", name: "YouTube", icon: "🎬" };
+  if (url.includes("twitter.com") || url.includes("x.com")) return { platform: "x", name: "X (Twitter)", icon: "🐦" };
+  if (url.includes("instagram.com")) return { platform: "instagram", name: "Instagram", icon: "📸" };
+  if (url.includes("tiktok.com")) return { platform: "tiktok", name: "TikTok", icon: "🎵" };
+  if (url.includes("facebook.com") || url.includes("fb.com")) return { platform: "facebook", name: "Facebook", icon: "👤" };
+  if (url.includes("threads.com") || url.includes("threads.net")) return { platform: "threads", name: "Threads", icon: "🧵" };
+  if (url.includes("bsky.app")) return { platform: "bluesky", name: "Bluesky", icon: "🦋" };
   return { platform: "unknown", name: "منشور", icon: "🔗" };
 }
 
-/* ============ تحميل المنشورات من Google Sheets ============ */
-
-async function loadSocialPosts() {
-  if (!API_URL || API_URL === 'ضع_رابط_Google_Apps_Script_هنا') {
-    console.warn('[SHOWGI249] لم يتم تعيين API_URL بعد');
-    socialPosts = [];
-    renderSocialPosts();
-    return;
-  }
-
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    if (!data.success) throw new Error(data.error || 'فشل التحميل');
-
-    socialPosts = data.posts || [];
-    console.log(`[SHOWGI249] تم تحميل ${socialPosts.length} منشور`);
-  } catch (err) {
-    console.error('[SHOWGI249] فشل تحميل المنشورات:', err);
-    socialPosts = [];
-  }
-
-  renderSocialPosts();
-}
-
-/* ============ معالجة إرسال النموذج ============ */
-
-function setupFormHandler() {
-  const form = document.getElementById('submissionForm');
-  if (!form) return;
-
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    if (!API_URL || API_URL === 'ضع_رابط_Google_Apps_Script_هنا') {
-      alert('⚠️ لم يتم إعداد API_URL بعد. يرجى الاتصال بالمسؤول.');
-      return;
-    }
-
-    const formData = new FormData(form);
-    const payload = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      url: formData.get('url'),
-      title: formData.get('title') || ''
-    };
-
-    if (!payload.url || !payload.url.startsWith('http')) {
-      alert('⚠️ يرجى إدخال رابط صحيح يبدأ بـ http.');
-      return;
-    }
-
-    const btn = form.querySelector('button[type="submit"]');
-    const originalText = btn.textContent;
-    btn.textContent = '⏳ جاري النشر...';
-    btn.disabled = true;
-
-    try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-      });
-
-      const result = await res.json();
-
-      if (result.success) {
-        alert('✅ تم نشر منشورك بنجاح! شكراً لك يا ' + payload.name);
-        form.reset();
-        await loadSocialPosts();
-        document.getElementById('social-posts').scrollIntoView({ behavior: 'smooth' });
-      } else {
-        alert('❌ حدث خطأ: ' + (result.error || 'غير معروف'));
-      }
-    } catch (err) {
-      console.error('فشل الإرسال:', err);
-      alert('❌ تعذر الاتصال بالخادم. حاول مرة أخرى.');
-    } finally {
-      btn.textContent = originalText;
-      btn.disabled = false;
-    }
-  });
-}
-
-/* ============ عرض منشورات السوشيال ============ */
-
-function renderSocialPosts() {
-  if (!socialPostsContainer) return;
-
-  if (socialPosts.length === 0) {
-    socialPostsContainer.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
-        <p>لا توجد منشورات حالياً. كن أول من يضيف!</p>
-      </div>
-    `;
-    return;
-  }
-
-  socialPostsContainer.innerHTML = socialPosts.map(post => {
-    const { name, icon } = detectPlatform(post.url);
-    return `
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="color: #fff; font-weight: bold; font-size: 0.9rem;">${icon} ${name}</span>
-        </div>
-        ${post.title ? `<p style="color: #ddd; font-size: 0.9rem; margin: 0;">${escapeHtml(post.title)}</p>` : ""}
-        ${post.name ? `<p style="color: #666; font-size: 0.75rem; margin: 0;">بواسطة: ${escapeHtml(post.name)}</p>` : ""}
-        <social-embed url="${escapeHtml(post.url)}" style="width: 100%; border-radius: 8px; overflow: hidden;"></social-embed>
-        <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener" style="color: #7c3aed; text-decoration: none; font-size: 0.85rem; text-align: center; word-break: break-all;">🔗 فتح في ${name}</a>
-      </div>
-    `;
-  }).join("");
-}
-
-/* ============ جلب البيانات من content.json ============ */
-
 async function loadRemotePosts() {
   try {
-    const res = await fetch("./content.json", {
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-    });
-
+    const res = await fetch("./content.json", { headers: { Accept: "application/json" }, cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
@@ -215,16 +82,20 @@ async function loadRemotePosts() {
       allPosts = [];
     }
 
+    if (Array.isArray(data.posts)) {
+      socialPosts = data.posts.filter(p => p.url && !p.type);
+    }
+
     allPosts = sortByDate(allPosts);
   } catch (err) {
     console.error("[SHOWGI249] فشل تحميل المحتوى:", err);
     allPosts = [];
+    socialPosts = [];
   }
 
   renderPosts();
+  renderSocialPosts();
 }
-
-/* ============ عرض مركز المحتوى ============ */
 
 function renderPosts() {
   if (!postsContainer) return;
@@ -274,7 +145,33 @@ function renderPosts() {
   }).join("");
 }
 
-/* ============ الفلاتر ============ */
+function renderSocialPosts() {
+  if (!socialPostsContainer) return;
+
+  if (socialPosts.length === 0) {
+    socialPostsContainer.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
+        <p>لا توجد منشورات حالياً. كن أول من يقترح منشوراً!</p>
+      </div>
+    `;
+    return;
+  }
+
+  socialPostsContainer.innerHTML = socialPosts.map(post => {
+    const { name, icon } = detectPlatform(post.url);
+    return `
+      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="color: #fff; font-weight: bold; font-size: 0.9rem;">${icon} ${name}</span>
+        </div>
+        ${post.title ? `<p style="color: #ddd; font-size: 0.9rem; margin: 0;">${escapeHtml(post.title)}</p>` : ""}
+        ${post.name ? `<p style="color: #666; font-size: 0.75rem; margin: 0;">بواسطة: ${escapeHtml(post.name)}</p>` : ""}
+        <social-embed url="${escapeHtml(post.url)}" style="width: 100%; border-radius: 8px; overflow: hidden;"></social-embed>
+        <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener" style="color: #7c3aed; text-decoration: none; font-size: 0.85rem; text-align: center; word-break: break-all;">🔗 فتح في ${name}</a>
+      </div>
+    `;
+  }).join("");
+}
 
 typeButtons.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -294,10 +191,4 @@ platformButtons.forEach(btn => {
   });
 });
 
-/* ============ التشغيل ============ */
-
-document.addEventListener("DOMContentLoaded", () => {
-  setupFormHandler();
-  loadRemotePosts();
-  loadSocialPosts();
-});
+document.addEventListener("DOMContentLoaded", loadRemotePosts);
