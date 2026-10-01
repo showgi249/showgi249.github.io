@@ -7,10 +7,17 @@
   <meta name="description" content="SHOWGI249 — مركز الهوية والمحتوى الرقمي لأحمد شوقي.">
   <meta name="author" content="أحمد شوقي">
   <meta name="theme-color" content="#08090d">
+
+  <!-- الأيقونة (Favicon) -->
+  <link rel="icon" type="image/png" href="Showgi.png">
+  <link rel="apple-touch-icon" href="Showgi.png">
+  <link rel="shortcut icon" href="Showgi.png">
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="أحمد شوقي | SHOWGI249">
   <meta property="og:description" content="مركز الهوية والمحتوى الرقمي لـ SHOWGI249">
   <meta property="og:url" content="https://showgi249.com/">
+  <meta property="og:image" content="Showgi.png">
 
   <script async src="https://plausible.io/js/pa-nUxvM1rDaNdOyY4LomFwH.js"></script>
   <script>
@@ -31,165 +38,24 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    .cv-section {
-      background: linear-gradient(135deg, #0f1220 0%, #131729 50%, #0f1220 100%);
-      padding: 60px 20px;
+    .cv-hero-btn {
+      background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
+      border: none !important;
+      color: #fff !important;
+      font-weight: 800 !important;
+      font-size: 1rem !important;
+      padding: 14px 26px !important;
+      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5) !important;
       position: relative;
-      overflow: hidden;
+      animation: pulse-glow 2s infinite;
     }
-    .cv-section::before {
-      content: '';
-      position: absolute;
-      top: -50%; right: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle at 30% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
-                  radial-gradient(circle at 70% 80%, rgba(37, 99, 235, 0.08) 0%, transparent 40%);
-      pointer-events: none; z-index: 0;
+    .cv-hero-btn:hover {
+      transform: translateY(-3px) scale(1.03) !important;
+      box-shadow: 0 15px 40px rgba(124, 58, 237, 0.7) !important;
     }
-    .cv-container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-
-    .cv-profile {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
-      border: 1px solid rgba(124, 58, 237, 0.3);
-      border-radius: 20px; padding: 30px;
-      display: flex; align-items: center; gap: 25px;
-      margin-bottom: 40px; flex-wrap: wrap;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 40px rgba(124, 58, 237, 0.1);
-    }
-    .cv-profile-avatar {
-      width: 110px; height: 110px; border-radius: 50%;
-      border: 3px solid; border-image: linear-gradient(135deg, #7c3aed, #06b6d4) 1;
-      overflow: hidden; flex-shrink: 0;
-      box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
-    }
-    .cv-profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .cv-profile-info { flex: 1; min-width: 200px; }
-    .cv-profile-info h3 {
-      font-size: 1.9rem;
-      background: linear-gradient(90deg, #a78bfa, #38bdf8, #22d3ee);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text; margin: 0 0 8px; font-weight: 800;
-    }
-    .cv-profile-info .cv-title { color: #94a3b8; font-size: 1rem; margin: 0 0 12px; font-weight: 500; }
-    .cv-contact-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .cv-chip {
-      background: rgba(30, 41, 59, 0.8); color: #cbd5e1;
-      padding: 6px 14px; border-radius: 20px; font-size: 0.8rem;
-      text-decoration: none; border: 1px solid rgba(148, 163, 184, 0.2);
-      transition: all 0.3s; display: inline-flex; align-items: center; gap: 5px;
-    }
-    .cv-chip:hover {
-      background: rgba(124, 58, 237, 0.3); border-color: #7c3aed;
-      color: #fff; transform: translateY(-2px);
-    }
-
-    .cv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-    .cv-card {
-      background: rgba(26, 29, 36, 0.9); border: 1px solid #2a2e38;
-      border-radius: 16px; padding: 25px; transition: all 0.3s;
-      position: relative; overflow: hidden;
-    }
-    .cv-card::before {
-      content: ''; position: absolute; top: 0; right: 0;
-      width: 4px; height: 100%;
-      background: linear-gradient(180deg, #7c3aed, #06b6d4);
-    }
-    .cv-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(124, 58, 237, 0.5);
-      box-shadow: 0 15px 40px rgba(124, 58, 237, 0.15);
-    }
-    .cv-card h4 {
-      color: #fff; font-size: 1.15rem; margin: 0 0 20px;
-      display: flex; align-items: center; gap: 10px;
-      padding-bottom: 12px; border-bottom: 1px solid #2a2e38;
-    }
-    .cv-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.7; margin: 0 0 10px; }
-    .cv-card p:last-child { margin-bottom: 0; }
-    .cv-card.full-width { grid-column: 1 / -1; }
-
-    .skill-item { margin-bottom: 16px; }
-    .skill-item:last-child { margin-bottom: 0; }
-    .skill-header {
-      display: flex; justify-content: space-between; color: #cbd5e1;
-      font-size: 0.9rem; margin-bottom: 6px; font-weight: 500;
-    }
-    .skill-header .skill-percent { color: #a78bfa; font-weight: 700; }
-    .skill-bar { height: 8px; background: #0d1017; border-radius: 10px; overflow: hidden; position: relative; }
-    .skill-bar-fill {
-      height: 100%; border-radius: 10px;
-      background: linear-gradient(90deg, #7c3aed, #06b6d4);
-      width: 0; transition: width 1.5s ease-out;
-      box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
-      position: relative;
-    }
-    .skill-bar-fill::after {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 2s infinite;
-    }
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .timeline-item {
-      position: relative; padding-right: 25px;
-      padding-bottom: 20px; border-right: 2px solid rgba(124, 58, 237, 0.3);
-    }
-    .timeline-item:last-child { border-right-color: transparent; padding-bottom: 0; }
-    .timeline-item::before {
-      content: ''; position: absolute; right: -8px; top: 5px;
-      width: 14px; height: 14px; border-radius: 50%;
-      background: linear-gradient(135deg, #7c3aed, #06b6d4);
-      box-shadow: 0 0 15px rgba(124, 58, 237, 0.7);
-    }
-    .timeline-item h5 { color: #fff; font-size: 1rem; margin: 0 0 4px; font-weight: 700; }
-    .timeline-item .timeline-sub { color: #a78bfa; font-size: 0.85rem; margin: 0 0 6px; font-weight: 600; }
-    .timeline-item .timeline-date { color: #64748b; font-size: 0.75rem; margin: 0 0 8px; }
-    .timeline-item p, .timeline-item ul { color: #94a3b8; font-size: 0.85rem; line-height: 1.6; margin: 0; }
-    .timeline-item ul { padding-right: 18px; margin-top: 5px; }
-    .timeline-item li { margin-bottom: 3px; }
-
-    .cv-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .cv-tag {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.2));
-      color: #c4b5fd; padding: 6px 14px; border-radius: 20px;
-      font-size: 0.8rem; border: 1px solid rgba(124, 58, 237, 0.3);
-      font-weight: 500; transition: all 0.3s;
-    }
-    .cv-tag:hover { transform: scale(1.05); color: #fff; }
-
-    .cv-list { list-style: none; padding: 0; margin: 0; }
-    .cv-list li {
-      color: #cbd5e1; font-size: 0.9rem; padding: 6px 0;
-      padding-right: 22px; position: relative; line-height: 1.5;
-    }
-    .cv-list li::before {
-      content: '✦'; position: absolute; right: 0; top: 6px;
-      color: #a78bfa; font-size: 0.8rem;
-    }
-
-    .cv-download-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 28px;
-      background: linear-gradient(135deg, #7c3aed, #06b6d4);
-      color: #fff; border: none; border-radius: 12px;
-      font-weight: 700; font-size: 1rem; text-decoration: none;
-      cursor: pointer; transition: all 0.3s; font-family: inherit;
-      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
-      margin-top: 20px;
-    }
-    .cv-download-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
-    }
-
-    @media (max-width: 600px) {
-      .cv-profile { flex-direction: column; text-align: center; }
-      .cv-profile-info h3 { font-size: 1.5rem; }
-      .cv-contact-chips { justify-content: center; }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5); }
+      50% { box-shadow: 0 8px 35px rgba(6, 182, 212, 0.7); }
     }
   </style>
 </head>
@@ -204,269 +70,15 @@
     <div class="hero-content">
       <span class="badge">SHOWGI249</span>
       <h1>أحمد شوقي</h1>
-      <p>مطور برمجيات مبتدئ | مهتم بالأمن السيبراني</p>
+      <p>أفكار. تقنية. تأثير. = الرسالة.</p>
       <div class="hero-buttons" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-        <a href="#cv" class="primary-btn" style="background: #7c3aed; border-color: #7c3aed;">📄 السيرة الذاتية</a>
+        <a href="cv.html" class="primary-btn cv-hero-btn">📄 السيرة الذاتية</a>
         <a href="#content" class="primary-btn">استكشف المحتوى</a>
         <a href="#social-posts" class="primary-btn" style="background: #06b6d4; border-color: #06b6d4;">📌 منشوراتي</a>
         <a href="#bank" class="primary-btn" style="background: #2563eb; border-color: #2563eb;">💳 الحسابات البنكية</a>
       </div>
     </div>
   </header>
-
-  <!-- CV SECTION -->
-  <section id="cv" class="cv-section">
-    <div class="cv-container">
-
-      <!-- بطاقة المعلومات الشخصية -->
-      <div class="cv-profile">
-        <div class="cv-profile-avatar">
-          <img src="Showgi.png" alt="أحمد شوقي">
-        </div>
-        <div class="cv-profile-info">
-          <h3>أحمد شوقي</h3>
-          <p class="cv-title">💻 مطور برمجيات مبتدئ | 🔐 مهتم بالأمن السيبراني | 📊 إدخال البيانات | 🎬 صناعة المحتوى</p>
-          <div class="cv-contact-chips">
-            <span class="cv-chip">📍 السودان</span>
-            <a href="mailto:showgi249@gmail.com" class="cv-chip">📧 showgi249@gmail.com</a>
-            <a href="https://showgi249.github.io/" target="_blank" class="cv-chip">🌐 الموقع الشخصي</a>
-            <span class="cv-chip">🔗 Showgi249</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="cv-grid">
-
-        <!-- الملف الشخصي -->
-        <div class="cv-card full-width">
-          <h4><span>👤</span> الملف الشخصي</h4>
-          <p>شخص مهتم بمجال البرمجة وتطوير البرمجيات والتقنية والأمن السيبراني، وأسعى إلى تطوير مهاراتي العملية بصورة مستمرة وبناء مسار مهني في المجال التقني.</p>
-          <p>أمتلك معرفة في Python، أساسيات Linux، أساسيات Kali Linux وأمن الشبكات، إدخال البيانات واستخدام الحاسوب، إضافة إلى اهتمام بصناعة المحتوى والتواصل الرقمي.</p>
-          <p>أتميز بالرغبة في التعلم، والقدرة على التعلم الذاتي، والاهتمام بالتفاصيل، والعمل على تطوير المهارات التقنية بصورة عملية.</p>
-        </div>
-
-        <!-- الهدف المهني -->
-        <div class="cv-card full-width" style="background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1)); border-color: rgba(124, 58, 237, 0.3);">
-          <h4><span>🎯</span> الهدف المهني</h4>
-          <p>الحصول على فرصة عمل أو تدريب مهني في مجال البرمجة، تطوير البرمجيات، الدعم التقني، إدخال البيانات، أو المجالات التقنية المبتدئة، بما يتيح لي تطبيق مهاراتي وتطوير خبرتي العملية وبناء مسار مهني مستقر في قطاع التكنولوجيا.</p>
-        </div>
-
-        <!-- المهارات التقنية -->
-        <div class="cv-card">
-          <h4><span>⚡</span> المهارات التقنية</h4>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>Python</span><span class="skill-percent">65%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="65"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>أساسيات Linux</span><span class="skill-percent">70%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="70"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>Kali Linux</span><span class="skill-percent">55%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="55"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>أمن الشبكات</span><span class="skill-percent">55%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="55"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>HTML / CSS / JavaScript</span><span class="skill-percent">70%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="70"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>إدخال البيانات</span><span class="skill-percent">85%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="85"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>صناعة المحتوى</span><span class="skill-percent">80%</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="80"></div></div>
-          </div>
-        </div>
-
-        <!-- اللغات -->
-        <div class="cv-card">
-          <h4><span>🌍</span> اللغات</h4>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>العربية (اللغة الأساسية)</span><span class="skill-percent">ممتازة</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="100"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>الإنجليزية</span><span class="skill-percent">مبتدئ</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="35"></div></div>
-          </div>
-
-          <div class="skill-item">
-            <div class="skill-header"><span>الفرنسية</span><span class="skill-percent">مبتدئ</span></div>
-            <div class="skill-bar"><div class="skill-bar-fill" data-width="25"></div></div>
-          </div>
-        </div>
-
-        <!-- المشاريع -->
-        <div class="cv-card full-width">
-          <h4><span>🚀</span> المشاريع والتطبيق العملي</h4>
-
-          <div class="timeline-item">
-            <h5>مشروع Showgi249 الشخصي</h5>
-            <p class="timeline-sub">موقع شخصي وتقني — GitHub Pages</p>
-            <p>تطوير وإدارة موقع شخصي يعكس الهوية الرقمية كمطور وصانع محتوى، ويتضمن:</p>
-            <ul>
-              <li>تصميم وتطوير واجهة الموقع باستخدام HTML وCSS وJavaScript.</li>
-              <li>تحسين التصميم ليكون مناسباً للهواتف وأجهزة الكمبيوتر.</li>
-              <li>إضافة عناصر تفاعلية باستخدام JavaScript.</li>
-              <li>نشر الموقع باستخدام GitHub Pages.</li>
-              <li>الاهتمام بالهوية البصرية وتجربة المستخدم.</li>
-              <li>تنظيم المحتوى التقني والشخصي بصورة احترافية.</li>
-            </ul>
-            <p style="margin-top: 8px;"><a href="https://showgi249.github.io/" target="_blank" style="color: #a78bfa; text-decoration: none;">🔗 https://showgi249.github.io/</a></p>
-          </div>
-
-          <div class="timeline-item">
-            <h5>تطبيقات وتجارب Python</h5>
-            <p class="timeline-sub">تدريب عملي</p>
-            <p>تدريب عملي على Python من خلال بناء وتجربة مشاريع وبرامج صغيرة:</p>
-            <ul>
-              <li>التعامل مع المتغيرات والعمليات والشروط والحلقات.</li>
-              <li>استخدام المكتبات البرمجية.</li>
-              <li>التعامل مع الأخطاء البرمجية.</li>
-              <li>بناء واجهات بسيطة باستخدام Tkinter.</li>
-              <li>إنشاء أدوات وبرامج صغيرة لأغراض تعليمية وعملية.</li>
-              <li>استخدام Python في الأتمتة والتعامل مع الملفات.</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- الخبرات -->
-        <div class="cv-card">
-          <h4><span>💼</span> الخبرات</h4>
-
-          <div class="timeline-item">
-            <h5>العمل الحر والعمل الميداني</h5>
-            <p>خبرة عملية في العمل وتحمل المسؤولية والتعامل المباشر مع الناس، مع القدرة على الالتزام بالمهام اليومية والتعامل مع ظروف العمل المختلفة.</p>
-          </div>
-
-          <div class="timeline-item">
-            <h5>صناعة المحتوى</h5>
-            <p class="timeline-sub">مشروع Showgi249</p>
-            <p>تطوير مشروع رقمي شخصي يهتم بالتقنية والبرمجة والأفكار والتوعية والمحتوى الرقمي. تشمل المهارات المكتسبة:</p>
-            <ul>
-              <li>كتابة المحتوى وتطوير الأفكار.</li>
-              <li>إدارة الهوية الرقمية.</li>
-              <li>استخدام منصات التواصل الاجتماعي.</li>
-              <li>بناء المحتوى التوعوي والتقني.</li>
-              <li>تطوير العلامة الشخصية.</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- الشهادات والدورات -->
-        <div class="cv-card">
-          <h4><span>🎓</span> الشهادات والدورات</h4>
-          <ul class="cv-list">
-            <li>شهادة أساسيات الحاسوب — مركز إسناد للتنمية المجتمعية.</li>
-            <li>شهادة من مركز مهارات.</li>
-            <li>شهادة أساسيات الحاسوب — جهة تابعة لمنظمة/جمعية مرتبطة بالأمم المتحدة.</li>
-            <li>شهادة الإسعافات الأولية — جمعية الهلال الأحمر السوداني.</li>
-          </ul>
-        </div>
-
-        <!-- التعليم -->
-        <div class="cv-card full-width">
-          <h4><span>📚</span> التعليم</h4>
-          <p>لم أكمل المرحلة الثانوية رسمياً، ولذلك لا أدرج مؤهلاً دراسياً غير حاصل عليه.</p>
-          <p>في المقابل، أعتمد حالياً بصورة كبيرة على <strong style="color: #a78bfa;">التعلم الذاتي والتدريب العملي</strong> في مجالات البرمجة والتقنية والأمن السيبراني، مع تطوير مهاراتي بصورة مستمرة.</p>
-        </div>
-
-        <!-- نقاط القوة -->
-        <div class="cv-card">
-          <h4><span>💪</span> نقاط القوة</h4>
-          <ul class="cv-list">
-            <li>التعلم الذاتي.</li>
-            <li>سرعة اكتساب المهارات الجديدة.</li>
-            <li>الاهتمام بالتكنولوجيا والبرمجة.</li>
-            <li>القدرة على العمل وتحمل المسؤولية.</li>
-            <li>الالتزام بتطوير المهارات.</li>
-            <li>التفكير في حل المشكلات.</li>
-            <li>الاهتمام بالتفاصيل.</li>
-            <li>القدرة على العمل بشكل مستقل.</li>
-            <li>الرغبة في اكتساب الخبرة العملية.</li>
-          </ul>
-        </div>
-
-        <!-- الاهتمامات المهنية -->
-        <div class="cv-card">
-          <h4><span>🎯</span> الاهتمامات المهنية</h4>
-          <div class="cv-tags">
-            <span class="cv-tag">تطوير البرمجيات</span>
-            <span class="cv-tag">Python</span>
-            <span class="cv-tag">الأمن السيبراني</span>
-            <span class="cv-tag">Linux</span>
-            <span class="cv-tag">الشبكات</span>
-            <span class="cv-tag">تطوير المواقع</span>
-            <span class="cv-tag">صناعة المحتوى التقني</span>
-            <span class="cv-tag">التكنولوجيا والابتكار</span>
-            <span class="cv-tag">التعلم المستمر</span>
-          </div>
-        </div>
-
-        <!-- الأدوات والتقنيات -->
-        <div class="cv-card full-width">
-          <h4><span>🛠️</span> الأدوات والتقنيات</h4>
-          <div class="cv-tags">
-            <span class="cv-tag">Python</span>
-            <span class="cv-tag">Linux</span>
-            <span class="cv-tag">Kali Linux</span>
-            <span class="cv-tag">Networking</span>
-            <span class="cv-tag">HTML</span>
-            <span class="cv-tag">CSS</span>
-            <span class="cv-tag">JavaScript</span>
-            <span class="cv-tag">Git</span>
-            <span class="cv-tag">GitHub</span>
-            <span class="cv-tag">Microsoft Word</span>
-            <span class="cv-tag">Microsoft Excel</span>
-            <span class="cv-tag">Microsoft PowerPoint</span>
-            <span class="cv-tag">Data Entry</span>
-            <span class="cv-tag">Tkinter</span>
-            <span class="cv-tag">Content Creation</span>
-          </div>
-        </div>
-
-        <!-- الروابط المهنية -->
-        <div class="cv-card full-width">
-          <h4><span>🔗</span> الروابط المهنية</h4>
-          <ul class="cv-list">
-            <li>الموقع الشخصي: <a href="https://showgi249.github.io/" target="_blank" style="color: #a78bfa; text-decoration: none;">https://showgi249.github.io/</a></li>
-            <li>الهوية الرقمية: Showgi249</li>
-            <li>البريد الإلكتروني: <a href="mailto:showgi249@gmail.com" style="color: #a78bfa; text-decoration: none;">showgi249@gmail.com</a></li>
-          </ul>
-        </div>
-
-        <!-- المراجع -->
-        <div class="cv-card full-width" style="text-align: center;">
-          <h4 style="justify-content: center;"><span>📋</span> المراجع</h4>
-          <p style="color: #a78bfa; font-size: 1rem; font-weight: 600;">متاحة عند الطلب.</p>
-        </div>
-
-      </div>
-
-      <!-- زر التحميل -->
-      <div style="text-align: center;">
-        <a href="#" class="cv-download-btn" onclick="alert('سيتم إضافة ملف السيرة الذاتية PDF قريباً.'); return false;">
-          📥 تحميل السيرة الذاتية PDF
-        </a>
-      </div>
-
-    </div>
-  </section>
 
   <!-- SOCIAL -->
   <section id="social" class="section">
@@ -653,20 +265,6 @@
         console.error('Copy failed: ', err);
       });
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const skillFills = document.querySelectorAll('.skill-bar-fill');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const width = entry.target.getAttribute('data-width');
-            entry.target.style.width = width + '%';
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.3 });
-      skillFills.forEach(fill => observer.observe(fill));
-    });
   </script>
 
   <script src="script.js"></script>
