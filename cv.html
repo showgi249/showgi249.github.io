@@ -44,7 +44,6 @@
       z-index: 1;
     }
 
-    /* شريط التنقل العلوي */
     .cv-topbar {
       display: flex;
       justify-content: space-between;
@@ -98,7 +97,6 @@
       box-shadow: 0 12px 30px rgba(124, 58, 237, 0.6);
     }
 
-    /* ورقة السيرة الذاتية */
     .cv-paper {
       background: linear-gradient(135deg, rgba(20, 24, 36, 0.95) 0%, rgba(15, 18, 32, 0.95) 100%);
       border: 1px solid rgba(124, 58, 237, 0.2);
@@ -108,7 +106,6 @@
       backdrop-filter: blur(10px);
     }
 
-    /* الهيدر */
     .cv-header {
       display: flex;
       align-items: center;
@@ -195,7 +192,6 @@
       transform: translateY(-2px);
     }
 
-    /* الأقسام */
     .cv-block {
       margin-bottom: 32px;
       page-break-inside: avoid;
@@ -246,7 +242,6 @@
 
     .cv-block p:last-child { margin-bottom: 0; }
 
-    /* الهدف المهني */
     .goal-box {
       background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(6, 182, 212, 0.12));
       border: 1px solid rgba(124, 58, 237, 0.3);
@@ -270,14 +265,12 @@
       line-height: 1;
     }
 
-    /* شبكة عمودين */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 30px;
     }
 
-    /* المهارات */
     .skill {
       margin-bottom: 14px;
     }
@@ -325,7 +318,7 @@
       100% { filter: brightness(1); }
     }
 
-    /* الوسوم */
+    /* ====== الوسوم (Tags) ====== */
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -333,6 +326,9 @@
     }
 
     .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       padding: 7px 16px;
       background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(6, 182, 212, 0.18));
       border: 1px solid rgba(124, 58, 237, 0.3);
@@ -341,15 +337,52 @@
       font-size: 0.82rem;
       font-weight: 600;
       transition: all 0.3s;
+      text-decoration: none;
+      cursor: pointer;
     }
 
-    .tag:hover {
-      transform: translateY(-2px);
+    /* وسم قابل للنقر */
+    .tag-link {
+      position: relative;
+    }
+
+    .tag-link::after {
+      content: '↗';
+      font-size: 0.75rem;
+      color: #22d3ee;
+      opacity: 0.7;
+      transition: all 0.3s;
+    }
+
+    .tag-link:hover {
+      transform: translateY(-3px);
       color: #fff;
-      box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(6, 182, 212, 0.4));
+      box-shadow: 0 8px 20px rgba(124, 58, 237, 0.5);
+      border-color: #a78bfa;
     }
 
-    /* المشاريع والخبرات */
+    .tag-link:hover::after {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+
+    /* وسم ثابت غير قابل للنقر */
+    .tag-static {
+      cursor: default;
+    }
+
+    .tag-static:hover {
+      transform: none;
+    }
+
+    /* الوسوم الخاصة بالأدوات */
+    .tag-tool {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(34, 211, 238, 0.15));
+      border-color: rgba(6, 182, 212, 0.3);
+      color: #67e8f9;
+    }
+
     .item {
       background: rgba(15, 18, 28, 0.6);
       border: 1px solid rgba(42, 46, 56, 0.8);
@@ -421,7 +454,6 @@
       font-size: 0.9rem;
     }
 
-    /* قائمة الإنجازات */
     .achievements {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -457,7 +489,6 @@
       line-height: 1.6;
     }
 
-    /* الشهادات */
     .cert-item {
       display: flex;
       align-items: flex-start;
@@ -493,7 +524,6 @@
       line-height: 1.5;
     }
 
-    /* الفوتر */
     .cv-footer {
       text-align: center;
       padding-top: 25px;
@@ -507,7 +537,6 @@
       color: #a78bfa;
     }
 
-    /* الجوال */
     @media (max-width: 700px) {
       body { padding: 12px; }
       .cv-paper { padding: 25px 20px; border-radius: 16px; }
@@ -520,36 +549,16 @@
       .cv-topbar { justify-content: center; }
     }
 
-    /* الطباعة */
     @media print {
-      body {
-        background: #fff;
-        color: #000;
-        padding: 0;
-      }
+      body { background: #fff; color: #000; padding: 0; }
       body::before { display: none; }
       .cv-topbar { display: none; }
-      .cv-paper {
-        background: #fff;
-        border: none;
-        box-shadow: none;
-        padding: 20px;
-      }
-      .cv-name {
-        background: none;
-        -webkit-text-fill-color: #7c3aed;
-        color: #7c3aed;
-      }
+      .cv-paper { background: #fff; border: none; box-shadow: none; padding: 20px; }
+      .cv-name { background: none; -webkit-text-fill-color: #7c3aed; color: #7c3aed; }
       .cv-block-title, .item-title, .cv-role { color: #000; }
-      .cv-block p, .item-desc, .item-list li, .cert-text, .achievement-text {
-        color: #333;
-      }
+      .cv-block p, .item-desc, .item-list li, .cert-text, .achievement-text { color: #333; }
       .cv-block { page-break-inside: avoid; }
-      .item, .cert-item, .achievement-item, .goal-box {
-        background: #f8f9fa;
-        border-color: #ddd;
-        break-inside: avoid;
-      }
+      .item, .cert-item, .achievement-item, .goal-box { background: #f8f9fa; border-color: #ddd; break-inside: avoid; }
     }
   </style>
 </head>
@@ -557,13 +566,11 @@
 
   <div class="cv-wrapper">
 
-    <!-- شريط علوي -->
     <div class="cv-topbar">
       <a href="index.html" class="back-btn">← العودة للموقع</a>
       <button class="print-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
     </div>
 
-    <!-- ورقة السيرة الذاتية -->
     <div class="cv-paper">
 
       <!-- الهيدر -->
@@ -599,7 +606,7 @@
         </div>
       </section>
 
-      <!-- عمودان: المهارات + اللغات -->
+      <!-- المهارات + اللغات -->
       <div class="two-col">
         <section class="cv-block">
           <h2 class="cv-block-title"><span class="cv-block-icon">⚡</span> المهارات التقنية</h2>
@@ -766,41 +773,41 @@
         </div>
       </section>
 
-      <!-- الاهتمامات + الأدوات -->
+      <!-- الاهتمامات + الأدوات (تم التعديل) -->
       <div class="two-col">
         <section class="cv-block">
           <h2 class="cv-block-title"><span class="cv-block-icon">🎯</span> الاهتمامات المهنية</h2>
           <div class="tags">
-            <span class="tag">تطوير البرمجيات</span>
-            <span class="tag">Python</span>
-            <span class="tag">الأمن السيبراني</span>
-            <span class="tag">Linux</span>
-            <span class="tag">الشبكات</span>
-            <span class="tag">تطوير المواقع</span>
-            <span class="tag">صناعة المحتوى التقني</span>
-            <span class="tag">التكنولوجيا والابتكار</span>
-            <span class="tag">التعلم المستمر</span>
+            <a href="https://github.com/" target="_blank" rel="noopener" class="tag tag-link">تطوير البرمجيات</a>
+            <a href="https://www.python.org/" target="_blank" rel="noopener" class="tag tag-link">Python</a>
+            <a href="https://www.cisa.gov/cybersecurity" target="_blank" rel="noopener" class="tag tag-link">الأمن السيبراني</a>
+            <a href="https://www.linux.org/" target="_blank" rel="noopener" class="tag tag-link">Linux</a>
+            <a href="https://www.cisco.com/c/en/us/solutions/enterprise-networks/what-is-computer-networking.html" target="_blank" rel="noopener" class="tag tag-link">الشبكات</a>
+            <a href="https://developer.mozilla.org/" target="_blank" rel="noopener" class="tag tag-link">تطوير المواقع</a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener" class="tag tag-link">صناعة المحتوى التقني</a>
+            <a href="https://www.technologyreview.com/" target="_blank" rel="noopener" class="tag tag-link">التكنولوجيا والابتكار</a>
+            <a href="https://www.freecodecamp.org/" target="_blank" rel="noopener" class="tag tag-link">التعلم المستمر</a>
           </div>
         </section>
 
         <section class="cv-block">
           <h2 class="cv-block-title"><span class="cv-block-icon">🛠️</span> الأدوات والتقنيات</h2>
           <div class="tags">
-            <span class="tag">Python</span>
-            <span class="tag">Linux</span>
-            <span class="tag">Kali Linux</span>
-            <span class="tag">Networking</span>
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-            <span class="tag">Git</span>
-            <span class="tag">GitHub</span>
-            <span class="tag">Word</span>
-            <span class="tag">Excel</span>
-            <span class="tag">PowerPoint</span>
-            <span class="tag">Data Entry</span>
-            <span class="tag">Tkinter</span>
-            <span class="tag">Content Creation</span>
+            <a href="https://www.python.org/" target="_blank" rel="noopener" class="tag tag-link tag-tool">Python</a>
+            <a href="https://www.linux.org/" target="_blank" rel="noopener" class="tag tag-link tag-tool">Linux</a>
+            <a href="https://www.kali.org/" target="_blank" rel="noopener" class="tag tag-link tag-tool">Kali Linux</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener" class="tag tag-link tag-tool">HTML</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener" class="tag tag-link tag-tool">CSS</a>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener" class="tag tag-link tag-tool">JavaScript</a>
+            <a href="https://git-scm.com/" target="_blank" rel="noopener" class="tag tag-link tag-tool">Git</a>
+            <a href="https://github.com/" target="_blank" rel="noopener" class="tag tag-link tag-tool">GitHub</a>
+            <a href="https://www.microsoft.com/microsoft-365/word" target="_blank" rel="noopener" class="tag tag-link tag-tool">Word</a>
+            <a href="https://www.microsoft.com/microsoft-365/excel" target="_blank" rel="noopener" class="tag tag-link tag-tool">Excel</a>
+            <a href="https://www.microsoft.com/microsoft-365/powerpoint" target="_blank" rel="noopener" class="tag tag-link tag-tool">PowerPoint</a>
+            <a href="https://docs.python.org/3/library/tkinter.html" target="_blank" rel="noopener" class="tag tag-link tag-tool">Tkinter</a>
+            <span class="tag tag-static tag-tool">Networking</span>
+            <span class="tag tag-static tag-tool">Data Entry</span>
+            <span class="tag tag-static tag-tool">Content Creation</span>
           </div>
         </section>
       </div>
@@ -811,7 +818,6 @@
         <p style="text-align: center; color: #a78bfa; font-weight: 600;">متاحة عند الطلب.</p>
       </section>
 
-      <!-- الفوتر -->
       <div class="cv-footer">
         <p><strong>أحمد شوقي</strong> — <strong>SHOWGI249</strong></p>
         <p>© 2026 — جميع الحقوق محفوظة</p>
