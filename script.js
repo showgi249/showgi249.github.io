@@ -1,5 +1,5 @@
 /* ==========================================================
-   SHOWGI249 — محرك عرض المحتوى
+   SHOWGI249 — محرك عرض المحتوى (المنصات القابلة للتشغيل فقط)
    ========================================================== */
 
 const postsContainer = document.getElementById("posts");
@@ -12,6 +12,18 @@ let allPosts = [];
 let socialPosts = [];
 let allContentLinks = [];
 let filterState = { type: "all", platform: "all" };
+
+/* ============ المنصات المدعومة للتشغيل التلقائي ============ */
+const PLAYABLE_PLATFORMS = [
+  { key: "youtube", name: "YouTube", icon: "🎬", color: "#ff0000",
+    match: (url) => url.includes("youtube.com") || url.includes("youtu.be") },
+  { key: "vimeo", name: "Vimeo", icon: "🎥", color: "#1ab7ea",
+    match: (url) => url.includes("vimeo.com") },
+  { key: "telegram", name: "Telegram", icon: "✈️", color: "#0088cc",
+    match: (url) => url.includes("t.me") || url.includes("telegram") },
+  { key: "dailymotion", name: "Dailymotion", icon: "📺", color: "#0066dc",
+    match: (url) => url.includes("dailymotion.com") || url.includes("dai.ly") }
+];
 
 /* ============ دوال مساعدة ============ */
 
@@ -45,23 +57,60 @@ function sortByDate(posts) {
   });
 }
 
-function detectPlatform(url) {
-  if (!url) return { platform: "unknown", name: "منشور", icon: "🔗" };
-  if (url.includes("youtube.com") || url.includes("youtu.be")) return { platform: "youtube", name: "YouTube", icon: "🎬" };
-  if (url.includes("twitter.com") || url.includes("x.com")) return { platform: "x", name: "X (Twitter)", icon: "🐦" };
-  if (url.includes("instagram.com")) return { platform: "instagram", name: "Instagram", icon: "📸" };
-  if (url.includes("tiktok.com")) return { platform: "tiktok", name: "TikTok", icon: "🎵" };
-  if (url.includes("facebook.com") || url.includes("fb.com")) return { platform: "facebook", name: "Facebook", icon: "👤" };
-  if (url.includes("threads.com") || url.includes("threads.net")) return { platform: "threads", name: "Threads", icon: "🧵" };
-  if (url.includes("t.me")) return { platform: "telegram", name: "Telegram", icon: "✈️" };
-  if (url.includes("snapchat.com")) return { platform: "snapchat", name: "Snapchat", icon: "👻" };
-  if (url.includes("linkedin.com")) return { platform: "linkedin", name: "LinkedIn", icon: "💼" };
-  if (url.includes("reddit.com")) return { platform: "reddit", name: "Reddit", icon: "👽" };
-  if (url.includes("pinterest.com")) return { platform: "pinterest", name: "Pinterest", icon: "📌" };
-  if (url.includes("vimeo.com")) return { platform: "vimeo", name: "Vimeo", icon: "🎥" };
-  if (url.includes("github.com")) return { platform: "github", name: "GitHub", icon: "🐙" };
-  if (url.includes("bsky.app")) return { platform: "bluesky", name: "Bluesky", icon: "🦋" };
-  return { platform: "unknown", name: "منشور", icon: "🔗" };
+/* ============ كشف المنصة (فقط القابلة للتشغيل) ============ */
+
+function detectPlayablePlatform(url) {
+  if (!url) return null;
+  for (const p of PLAYABLE_PLATFORMS) {
+    if (p.match(url)) return p;
+  }
+  return null;
+}
+
+/* ============ توليد رابط التضمين ============ */
+
+function getEmbedUrl(url) {
+  // YouTube
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
+  if (ytMatch) {
+    return {
+      type: "iframe",
+      src: `https://www.youtube.com/embed/${ytMatch[1]}?rel=0&modestbranding=1`
+    };
+  }
+
+  // Vimeo
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) {
+    return {
+      type: "iframe",
+      src: `https://player.vimeo.com/video/${vimeoMatch[1]}?byline=0&portrait=0`
+    };
+  }
+
+  // Telegram
+  if (url.includes("t.me")) {
+    const tgMatch = url.match(/t\.me\/([^\/]+)\/(\d+)/);
+    if (tgMatch) {
+      return {
+        type: "iframe",
+        src: `https://t.me/${tgMatch[1]}/${tgMatch[2]}?embed=1&mode=tme`
+      };
+    }
+    return { type: "link", src: url };
+  }
+
+  // Dailymotion
+  const dmMatch = url.match(/dailymotion\.com\/video\/([a-zA-Z0-9]+)/) ||
+                  url.match(/dai\.ly\/([a-zA-Z0-9]+)/);
+  if (dmMatch) {
+    return {
+      type: "iframe",
+      src: `https://www.dailymotion.com/embed/video/${dmMatch[1]}`
+    };
+  }
+
+  return { type: "link", src: url };
 }
 
 /* ============ جلب البيانات ============ */
@@ -88,18 +137,20 @@ async function loadRemotePosts() {
       allPosts = [];
     }
 
+    // منشوراتي: فقط المنصات القابلة للتشغيل
     if (Array.isArray(data.posts)) {
-      socialPosts = data.posts.filter(p => p.url && !p.type);
+      socialPosts = data.posts.filter(p => p.url && !p.type && detectPlayablePlatform(p.url));
     }
 
+    // روابط المحتوى: فقط المنصات القابلة للتشغيل
     if (Array.isArray(data.content_links)) {
-      allContentLinks = data.content_links;
+      allContentLinks = data.content_links.filter(p => p.url && detectPlayablePlatform(p.url));
     } else {
       allContentLinks = [];
     }
 
     allPosts = sortByDate(allPosts);
-    console.log(`[SHOWGI249] محتوى: ${allPosts.length} | منشورات: ${socialPosts.length} | روابط: ${allContentLinks.length}`);
+    console.log(`[SHOWGI249] محتوى: ${allPosts.length} | منشورات قابلة للتشغيل: ${socialPosts.length} | روابط قابلة للتشغيل: ${allContentLinks.length}`);
   } catch (err) {
     console.error("[SHOWGI249] فشل التحميل:", err);
     allPosts = []; socialPosts = []; allContentLinks = [];
@@ -125,7 +176,7 @@ function renderPosts() {
       <div class="empty-content">
         <div class="empty-icon">✦</div>
         <h3>لا يوجد محتوى لعرضه حالياً</h3>
-        <p>سيظهر المحتوى هنا تلقائياً عند إضافته إلى content.json</p>
+        <p>سيظهر المحتوى هنا تلقائياً</p>
       </div>`;
     return;
   }
@@ -155,43 +206,7 @@ function renderPosts() {
   }).join("");
 }
 
-/* ============ كشف منصات روابط المحتوى ============ */
-
-function detectContentPlatform(url) {
-  if (!url) return { name: "منصة", icon: "🔗", color: "#666" };
-  if (url.includes("youtube.com") || url.includes("youtu.be")) return { name: "YouTube", icon: "🎬", color: "#ff0000" };
-  if (url.includes("vimeo.com")) return { name: "Vimeo", icon: "🎥", color: "#1ab7ea" };
-  if (url.includes("twitter.com") || url.includes("x.com")) return { name: "X (Twitter)", icon: "🐦", color: "#1d9bf0" };
-  if (url.includes("instagram.com")) return { name: "Instagram", icon: "📸", color: "#e1306c" };
-  if (url.includes("tiktok.com")) return { name: "TikTok", icon: "🎵", color: "#ff0050" };
-  if (url.includes("facebook.com") || url.includes("fb.com")) return { name: "Facebook", icon: "👤", color: "#1877f2" };
-  if (url.includes("threads.com") || url.includes("threads.net")) return { name: "Threads", icon: "🧵", color: "#333" };
-  if (url.includes("t.me")) return { name: "Telegram", icon: "✈️", color: "#0088cc" };
-  if (url.includes("snapchat.com")) return { name: "Snapchat", icon: "👻", color: "#fffc00" };
-  if (url.includes("linkedin.com")) return { name: "LinkedIn", icon: "💼", color: "#0a66c2" };
-  if (url.includes("reddit.com")) return { name: "Reddit", icon: "👽", color: "#ff4500" };
-  if (url.includes("pinterest.com")) return { name: "Pinterest", icon: "📌", color: "#e60023" };
-  if (url.includes("github.com")) return { name: "GitHub", icon: "🐙", color: "#333" };
-  if (url.includes("bsky.app")) return { name: "Bluesky", icon: "🦋", color: "#0085ff" };
-  return { name: "المنصة", icon: "🔗", color: "#666" };
-}
-
-function getEmbedUrl(url) {
-  let ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
-  if (ytMatch) return { type: "iframe", src: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=0` };
-
-  let vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
-  if (vimeoMatch) return { type: "iframe", src: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1` };
-
-  if (url.includes("t.me")) {
-    let tgMatch = url.match(/t\.me\/([^\/]+)\/(\d+)/);
-    if (tgMatch) return { type: "iframe", src: `https://t.me/${tgMatch[1]}/${tgMatch[2]}?embed=1` };
-  }
-
-  return { type: "embed-social", src: url };
-}
-
-/* ============ عرض منشورات السوشيال (مع تشغيل تلقائي للفيديو) ============ */
+/* ============ عرض منشوراتي (فقط القابلة للتشغيل) ============ */
 
 function renderSocialPosts() {
   if (!socialPostsContainer) return;
@@ -199,36 +214,30 @@ function renderSocialPosts() {
   if (socialPosts.length === 0) {
     socialPostsContainer.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
-        <p>لا توجد منشورات حالياً.</p>
+        <p>لا توجد فيديوهات قابلة للتشغيل حالياً.</p>
+        <p style="font-size: 0.85rem; margin-top: 8px;">يدعم: YouTube · Vimeo · Telegram · Dailymotion</p>
       </div>`;
     return;
   }
 
-  socialPostsContainer.innerHTML = socialPosts.map((post, index) => {
-    const { name, icon, color } = detectContentPlatform(post.url);
+  socialPostsContainer.innerHTML = socialPosts.map((post) => {
+    const platform = detectPlayablePlatform(post.url);
+    if (!platform) return "";
+    const { name, icon, color } = platform;
     const title = post.title ? escapeHtml(post.title) : name;
     const embed = getEmbedUrl(post.url);
 
-    // إذا كان فيديو قابل للتضمين المباشر (YouTube, Vimeo, Telegram)
-    // → نعرض الفيديو مباشرة بدون زر تشغيل
-    let mediaContent = "";
-    if (embed.type === "iframe") {
-      mediaContent = `
-        <div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden;">
-          <iframe src="${embed.src}"
-                  style="width: 100%; height: 100%; border: none;"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen>
-          </iframe>
-        </div>`;
-    } else {
-      // منصات أخرى — عرض بواسطة social-embed (تلقائي أيضاً)
-      mediaContent = `
-        <div style="background: #0d1017; border-radius: 10px; padding: 10px; min-height: 180px;">
-          <social-embed url="${escapeHtml(post.url)}" style="width: 100%;"></social-embed>
-        </div>`;
-    }
+    const mediaContent = embed.type === "iframe"
+      ? `<div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden;">
+           <iframe src="${embed.src}"
+                   style="width: 100%; height: 100%; border: none;"
+                   frameborder="0"
+                   loading="lazy"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                   allowfullscreen>
+           </iframe>
+         </div>`
+      : `<a href="${escapeHtml(post.url)}" target="_blank" rel="noopener" style="display: block; padding: 30px; text-align: center; color: #94a3b8; background: #0d1017; border-radius: 10px;">🔗 مشاهدة على ${name}</a>`;
 
     return `
       <div style="background: linear-gradient(135deg, rgba(26, 29, 36, 0.95), rgba(15, 18, 28, 0.95)); border: 1px solid #2a2e38; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s;"
@@ -256,62 +265,64 @@ function renderSocialPosts() {
   }).join("");
 }
 
-/* ============ روابط المحتوى ============ */
+/* ============ عرض روابط المحتوى (فقط القابلة للتشغيل) ============ */
 
 function renderContentLinks() {
   if (!contentLinksGrid) return;
   const links = Array.isArray(allContentLinks) ? allContentLinks : [];
+
   if (links.length === 0) {
     contentLinksGrid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
         <p>لا توجد روابط حالياً.</p>
+        <p style="font-size: 0.85rem; margin-top: 8px;">يدعم: YouTube · Vimeo · Telegram · Dailymotion</p>
       </div>`;
     return;
   }
-  contentLinksGrid.innerHTML = links.map((item, index) => {
-    const { name, icon, color } = detectContentPlatform(item.url);
+
+  contentLinksGrid.innerHTML = links.map((item) => {
+    const platform = detectPlayablePlatform(item.url);
+    if (!platform) return "";
+    const { name, icon, color } = platform;
     const title = item.title ? escapeHtml(item.title) : name;
-    const uniqueId = `content-${index}`;
+    const embed = getEmbedUrl(item.url);
+
+    const mediaContent = embed.type === "iframe"
+      ? `<div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden;">
+           <iframe src="${embed.src}"
+                   style="width: 100%; height: 100%; border: none;"
+                   frameborder="0"
+                   loading="lazy"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                   allowfullscreen>
+           </iframe>
+         </div>`
+      : `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" style="display: block; padding: 30px; text-align: center; color: #94a3b8; background: #0d1017; border-radius: 10px;">🔗 مشاهدة على ${name}</a>`;
+
     return `
       <div style="background: linear-gradient(135deg, rgba(26, 29, 36, 0.95), rgba(15, 18, 28, 0.95)); border: 1px solid #2a2e38; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s;"
            onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='${color}';"
            onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#2a2e38';">
+
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="display: inline-flex; align-items: center; gap: 8px; color: #fff; font-weight: 700; font-size: 0.9rem;">
             <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: ${color}22; border: 1px solid ${color}55; border-radius: 8px; font-size: 1rem;">${icon}</span>
             ${name}
           </span>
         </div>
-        <div id="${uniqueId}" style="background: #0d1017; border-radius: 10px; min-height: 180px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-          <div style="text-align: center; padding: 30px 20px; width: 100%;">
-            <div style="font-size: 3rem; margin-bottom: 10px; opacity: 0.5;">${icon}</div>
-            <p style="color: #888; font-size: 0.85rem; margin: 0;">اضغط زر التشغيل</p>
-          </div>
+
+        ${mediaContent}
+
+        <div style="color: #fff; font-weight: 700; font-size: 0.95rem; line-height: 1.4;">
+          ${title}
         </div>
-        <div style="color: #fff; font-weight: 700; font-size: 0.95rem;">${title}</div>
-        <div style="display: flex; gap: 8px;">
-          <button onclick="playContent('${uniqueId}', '${escapeHtml(item.url)}')"
-                  style="flex: 1; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; font-family: inherit;">▶️ تشغيل</button>
-          <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener"
-             style="flex: 1; background: ${color}; color: #fff; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.85rem; text-align: center;">↗ فتح في ${name}</a>
-        </div>
+
+        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener"
+           style="display: block; background: ${color}; color: #fff; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.85rem; text-align: center;">
+          ↗ فتح في ${name}
+        </a>
       </div>`;
   }).join("");
-}
-
-function playContent(containerId, url) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  const embed = getEmbedUrl(url);
-  if (embed.type === "iframe") {
-    container.innerHTML = `<iframe src="${embed.src}" style="width:100%;height:100%;min-height:180px;border:none;border-radius:10px;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    container.style.height = "200px";
-    container.style.display = "block";
-  } else if (embed.type === "embed-social") {
-    container.innerHTML = `<social-embed url="${escapeHtml(url)}" style="width: 100%;"></social-embed>`;
-  } else {
-    window.open(url, '_blank', 'noopener');
-  }
 }
 
 /* ============ الفلاتر ============ */
