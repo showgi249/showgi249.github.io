@@ -1,290 +1,232 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>أحمد شوقي | SHOWGI249</title>
-  <meta name="description" content="SHOWGI249 — مركز الهوية والمحتوى الرقمي لأحمد شوقي.">
-  <meta name="author" content="أحمد شوقي">
-  <meta name="theme-color" content="#08090d">
-
-  <!-- الأيقونة (Favicon) -->
-  <link rel="icon" type="image/png" href="Showgi.png">
-  <link rel="apple-touch-icon" href="Showgi.png">
-  <link rel="shortcut icon" href="Showgi.png">
-
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="أحمد شوقي | SHOWGI249">
-  <meta property="og:description" content="مركز الهوية والمحتوى الرقمي لـ SHOWGI249">
-  <meta property="og:url" content="https://showgi249.com/">
-  <meta property="og:image" content="Showgi.png">
-
-  <script async src="https://plausible.io/js/pa-nUxvM1rDaNdOyY4LomFwH.js"></script>
-  <script>
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments)
-    };
-  </script>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z763L98WXF"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-Z763L98WXF');
-  </script>
-
-  <script type="module" src="https://cdn.jsdelivr.net/npm/social-embed/dist/social-embed/social-embed.esm.js"></script>
-  <link rel="stylesheet" href="style.css">
-
-  <style>
-    .cv-hero-btn {
-      background: linear-gradient(135deg, #7c3aed, #06b6d4) !important;
-      border: none !important;
-      color: #fff !important;
-      font-weight: 800 !important;
-      font-size: 1rem !important;
-      padding: 14px 26px !important;
-      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5) !important;
-      position: relative;
-      animation: pulse-glow 2s infinite;
-    }
-    .cv-hero-btn:hover {
-      transform: translateY(-3px) scale(1.03) !important;
-      box-shadow: 0 15px 40px rgba(124, 58, 237, 0.7) !important;
-    }
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5); }
-      50% { box-shadow: 0 8px 35px rgba(6, 182, 212, 0.7); }
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- HEADER -->
-  <header class="hero">
-    <div class="avatar" aria-hidden="true">
-      <img src="Showgi.png" alt="شعار أحمد شوقي" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;">
+<!-- ==================== لوحة الإدارة المخفية ==================== -->
+<div id="adminPanel" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; padding: 20px; overflow-y: auto;">
+  <div style="max-width: 600px; margin: 20px auto; background: linear-gradient(135deg, #1a1d24, #0f1220); border: 2px solid #7c3aed; border-radius: 16px; padding: 25px; position: relative;">
+    
+    <button onclick="closeAdmin()" style="position: absolute; top: 15px; left: 15px; background: #ef4444; color: #fff; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: 700;">✕</button>
+    
+    <h2 style="color: #fff; text-align: center; margin-bottom: 20px;">🔐 لوحة الإدارة</h2>
+    
+    <!-- قسم الرمز (يظهر أول مرة فقط) -->
+    <div id="tokenSection" style="background: #0d1017; border: 1px solid #2a2e38; border-radius: 10px; padding: 15px; margin-bottom: 20px;">
+      <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">🔑 رمز GitHub (يُحفظ في متصفحك فقط):</label>
+      <input type="password" id="ghToken" placeholder="ghp_..." style="width: 100%; padding: 12px; background: #1a1d24; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: monospace; margin-bottom: 10px;">
+      <button onclick="saveToken()" style="background: #22c55e; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%;">💾 حفظ الرمز</button>
+      <button onclick="clearToken()" style="background: #ef4444; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 8px; font-size: 0.8rem;">🗑️ حذف الرمز المحفوظ</button>
     </div>
-    <div class="hero-content">
-      <span class="badge">SHOWGI249</span>
-      <h1>أحمد شوقي</h1>
-      <p>أفكار. تقنية. تأثير. = الرسالة.</p>
-      <div class="hero-buttons" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-        <a href="cv.html" class="primary-btn cv-hero-btn">📄 السيرة الذاتية</a>
-        <a href="#content-links" class="primary-btn" style="background: #ec4899; border-color: #ec4899;">🎬 روابط المحتوى</a>
-        <a href="#content" class="primary-btn">استكشف المحتوى</a>
-        <a href="#social-posts" class="primary-btn" style="background: #06b6d4; border-color: #06b6d4;">📌 منشوراتي</a>
-        <a href="#bank" class="primary-btn" style="background: #2563eb; border-color: #2563eb;">💳 الحسابات البنكية</a>
+
+    <!-- نموذج الإضافة -->
+    <div id="addSection" style="display: none;">
+      
+      <!-- خيارات النوع -->
+      <div style="margin-bottom: 15px;">
+        <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">📌 نوع الإضافة:</label>
+        <select id="addType" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
+          <option value="content_links">🔗 رابط محتوى (يظهر في قسم روابط المحتوى)</option>
+          <option value="posts">📝 منشور (يظهر في قسم منشوراتي)</option>
+        </select>
       </div>
-    </div>
-  </header>
 
-  <!-- SOCIAL -->
-  <section id="social" class="section">
-    <div class="section-heading">
-      <span>01</span>
-      <div>
-        <h2>حساباتي</h2>
-        <p>تابع SHOWGI249 على جميع المنصات.</p>
+      <!-- الرابط -->
+      <div style="margin-bottom: 15px;">
+        <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">🌐 الرابط:</label>
+        <input type="url" id="addUrl" placeholder="https://..." style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
       </div>
-    </div>
-    <div class="social-grid">
-      <a class="social-card instagram" href="https://www.instagram.com/showgi249" target="_blank" rel="noopener"><strong>Instagram</strong><span>@showgi249</span></a>
-      <a class="social-card tiktok" href="https://www.tiktok.com/@showgi249" target="_blank" rel="noopener"><strong>TikTok</strong><span>@showgi249</span></a>
-      <a class="social-card youtube" href="https://youtube.com/@showgi249" target="_blank" rel="noopener"><strong>YouTube</strong><span>@showgi249</span></a>
-      <a class="social-card facebook" href="https://www.facebook.com/showgi249" target="_blank" rel="noopener"><strong>Facebook</strong><span>showgi249</span></a>
-      <a class="social-card threads" href="https://www.threads.com/@showgi249" target="_blank" rel="noopener"><strong>Threads</strong><span>@showgi249</span></a>
-      <a class="social-card snapchat" href="https://www.snapchat.com/add/showgi249" target="_blank" rel="noopener"><strong>Snapchat</strong><span>showgi249</span></a>
-      <a class="social-card x" href="https://x.com/showgi249" target="_blank" rel="noopener"><strong>X</strong><span>@showgi249</span></a>
-      <a class="social-card telegram" href="https://t.me/showgi249" target="_blank" rel="noopener"><strong>Telegram</strong><span>@showgi249</span></a>
-    </div>
-  </section>
 
-  <!-- CONTENT LINKS SECTION -->
-  <section id="content-links" class="section">
-    <div class="section-heading">
-      <span>02</span>
-      <div>
-        <h2>روابط المحتوى</h2>
-        <p>اضغط على أي بطاقة لتشغيل المحتوى أو فتحه في المنصة.</p>
+      <!-- العنوان -->
+      <div style="margin-bottom: 15px;">
+        <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">📝 العنوان:</label>
+        <input type="text" id="addTitle" placeholder="عنوان المحتوى" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
       </div>
+
+      <!-- زر النشر -->
+      <button onclick="publishLink()" id="publishBtn" style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: #fff; border: none; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 800; width: 100%; font-size: 1rem; font-family: inherit;">🚀 نشر الرابط</button>
+      
+      <div id="adminStatus" style="color: #94a3b8; font-size: 0.85rem; text-align: center; margin-top: 12px; min-height: 20px;"></div>
+
+      <hr style="border-color: #2a2e38; margin: 20px 0;">
+
+      <p style="color: #94a3b8; font-size: 0.8rem; text-align: center;">
+        الرمز محفوظ في متصفحك فقط، ولا يظهر لأي زائر آخر.
+      </p>
     </div>
+  </div>
+</div>
 
-    <div id="contentLinksGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
-      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
-        <p>جاري تحميل الروابط...</p>
-      </div>
-    </div>
-  </section>
+<script>
+/* ==================== إدارة GitHub API ==================== */
+const GH_OWNER = 'showgi249';
+const GH_REPO = 'showgi249.github.io';
+const GH_FILE = 'content.json';
+const GH_BRANCH = 'main';
 
-  <!-- POSTS SECTION -->
-  <section id="social-posts" class="section posts-section">
-    <div class="section-heading">
-      <span>03</span>
-      <div>
-        <h2>منشوراتي</h2>
-        <p>أحدث منشوراتي من مختلف المنصات.</p>
-      </div>
-    </div>
+// التحقق من وضع الأدمن
+function isAdminMode() {
+  return new URLSearchParams(window.location.search).get('admin') === '1';
+}
 
-    <div id="socialPostsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
-      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
-        <p>جاري تحميل المنشورات...</p>
-      </div>
-    </div>
+// فتح لوحة الإدارة
+function openAdmin() {
+  const panel = document.getElementById('adminPanel');
+  if (!panel) return;
+  panel.style.display = 'block';
 
-    <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 25px; max-width: 600px; margin: 40px auto 0;">
-      <h3 style="color: #fff; margin-bottom: 15px; text-align: center;">📝 اقترح منشوراً للنشر</h3>
-      <p style="color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">سيتم مراجعة منشورك قبل النشر.</p>
+  const token = localStorage.getItem('gh_token');
+  if (token) {
+    document.getElementById('ghToken').value = token;
+    document.getElementById('tokenSection').style.display = 'none';
+    document.getElementById('addSection').style.display = 'block';
+  } else {
+    document.getElementById('tokenSection').style.display = 'block';
+    document.getElementById('addSection').style.display = 'none';
+  }
+}
 
-      <form action="https://formsubmit.co/showgi249@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-        <input type="hidden" name="_subject" value="📌 منشور جديد على SHOWGI249">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">الاسم</label>
-          <input type="text" name="name" required placeholder="اسمك" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">البريد الإلكتروني</label>
-          <input type="email" name="email" required placeholder="بريدك" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">رابط المنشور</label>
-          <input type="url" name="url" required placeholder="https://..." style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">العنوان (اختياري)</label>
-          <input type="text" name="title" placeholder="عنوان قصير" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <button type="submit" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: inherit;">📤 إرسال للمراجعة</button>
-      </form>
-    </div>
-  </section>
+// إغلاق لوحة الإدارة
+function closeAdmin() {
+  document.getElementById('adminPanel').style.display = 'none';
+  // إزالة admin=1 من الرابط
+  const url = new URL(window.location.href);
+  url.searchParams.delete('admin');
+  window.history.replaceState({}, '', url);
+}
 
-  <!-- CONTENT CENTER -->
-  <section id="content" class="section">
-    <div class="section-heading">
-      <span>04</span>
-      <div>
-        <h2>مركز المحتوى</h2>
-        <p>جميع فيديوهاتك وصورك ومنشوراتك في مكان واحد.</p>
-      </div>
-    </div>
+// حفظ الرمز
+function saveToken() {
+  const token = document.getElementById('ghToken').value.trim();
+  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+    alert('⚠️ الرمز غير صحيح. يجب أن يبدأ بـ ghp_ أو github_pat_');
+    return;
+  }
+  localStorage.setItem('gh_token', token);
+  document.getElementById('tokenSection').style.display = 'none';
+  document.getElementById('addSection').style.display = 'block';
+  showStatus('✅ تم حفظ الرمز بنجاح', '#22c55e');
+}
 
-    <div class="filters" role="group" aria-label="تصفية حسب النوع">
-      <button class="filter active" data-type="all">الكل</button>
-      <button class="filter" data-type="video">🎬 فيديو</button>
-      <button class="filter" data-type="image">🖼️ صور</button>
-      <button class="filter" data-type="text">📝 نصوص</button>
-    </div>
+// حذف الرمز
+function clearToken() {
+  if (!confirm('هل أنت متأكد من حذف الرمز؟')) return;
+  localStorage.removeItem('gh_token');
+  document.getElementById('ghToken').value = '';
+  document.getElementById('tokenSection').style.display = 'block';
+  document.getElementById('addSection').style.display = 'none';
+  showStatus('🗑️ تم حذف الرمز', '#ef4444');
+}
 
-    <div class="platform-filters" role="group" aria-label="تصفية حسب المنصة">
-      <button data-platform="all" class="active">الكل</button>
-      <button data-platform="youtube">YouTube</button>
-      <button data-platform="telegram">Telegram</button>
-      <button data-platform="instagram">Instagram</button>
-      <button data-platform="tiktok">TikTok</button>
-      <button data-platform="facebook">Facebook</button>
-      <button data-platform="threads">Threads</button>
-      <button data-platform="snapchat">Snapchat</button>
-      <button data-platform="x">X</button>
-    </div>
+// عرض رسالة الحالة
+function showStatus(msg, color) {
+  const el = document.getElementById('adminStatus');
+  if (el) {
+    el.textContent = msg;
+    el.style.color = color || '#94a3b8';
+  }
+}
 
-    <div id="posts" class="posts-grid" aria-live="polite">
-      <div class="empty-content">
-        <div class="empty-icon">✦</div>
-        <h3>جاري تحميل المحتوى...</h3>
-        <p>يرجى الانتظار قليلاً.</p>
-      </div>
-    </div>
-  </section>
+// جلب محتوى content.json من GitHub
+async function fetchContentJson() {
+  const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('فشل جلب الملف');
+  return await res.json();
+}
 
-  <!-- ABOUT -->
-  <section class="section about">
-    <div class="section-heading">
-      <span>05</span>
-      <div><h2>عن SHOWGI249</h2></div>
-    </div>
-    <div class="about-card">
-      <p>SHOWGI249 هو الاسم الموحد للهوية الرقمية لأحمد شوقي، ويجمع المحتوى والأفكار والحضور الرقمي في مساحة واحدة.</p>
-      <p>أفكار. تقنية. تأثير. = الرسالة.</p>
-    </div>
-  </section>
+// تحديث content.json على GitHub
+async function updateContentJson(newData, token) {
+  const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
 
-  <!-- BANK ACCOUNTS -->
-  <section id="bank" class="section bank-accounts">
-    <div class="section-heading">
-      <span>06</span>
-      <div>
-        <h2>الحسابات البنكية</h2>
-        <p>يمكنك دعم المحتوى عبر التحويل البنكي.</p>
-      </div>
-    </div>
+  // 1. جلب SHA الحالي
+  const getRes = await fetch(apiUrl, {
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+  });
+  if (!getRes.ok) throw new Error('فشل الاتصال بـ GitHub. تأكد من الرمز.');
+  const fileData = await getRes.json();
 
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-width: 480px; margin: 0 auto;">
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
-        <img src="bnkak.ico" alt="بنكك" style="width: 36px; height: 36px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 0.85rem;">بنكك</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">9702214</span>
-        <button onclick="copyToClipboard('9702214')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
-      </div>
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
-        <img src="forward.ico" alt="Forward" style="width: 36px; height: 36px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 0.85rem;">Forward</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">52309297</span>
-        <button onclick="copyToClipboard('52309297')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
-      </div>
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
-        <img src="O%20cash.ico" alt="O Cash" style="width: 36px; height: 36px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 0.85rem;">O Cash</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">1796570</span>
-        <button onclick="copyToClipboard('1796570')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
-      </div>
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
-        <img src="sahil.ico" alt="Sahil" style="width: 36px; height: 36px; object-fit: contain;">
-        <strong style="color: #fff; font-size: 0.85rem;">Sahil</strong>
-        <span style="color: #aaa; font-family: monospace; font-size: 0.9rem; background: #0d1017; padding: 5px 8px; border-radius: 6px; width: 100%;">0777623</span>
-        <button onclick="copyToClipboard('0777623')" style="background: #2563eb; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-family: inherit; width: 100%; font-size: 0.8rem;">📋 نسخ</button>
-      </div>
-    </div>
-  </section>
+  // 2. تحويل البيانات إلى Base64 (دعم UTF-8)
+  const jsonStr = JSON.stringify(newData, null, 2);
+  const base64Content = btoa(unescape(encodeURIComponent(jsonStr)));
 
-  <!-- CONTACT -->
-  <section class="section contact">
-    <div class="section-heading">
-      <span>07</span>
-      <div>
-        <h2>تواصل</h2>
-        <p>للتواصل والاستفسارات.</p>
-      </div>
-    </div>
-    <div class="contact-links" style="display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 0 auto;">
-      <a class="email" href="mailto:showgi249@gmail.com" style="display: block; padding: 14px; background: #1a1d24; color: #fff; border-radius: 10px; text-decoration: none; text-align: center; border: 1px solid #2a2e38;">📧 البريد الإلكتروني</a>
-      <a class="whatsapp" href="https://wa.me/249906862959" target="_blank" rel="noopener" style="display: block; padding: 14px; background: #25D366; color: #fff; border-radius: 10px; text-decoration: none; text-align: center; font-weight: bold;">📱 تواصل عبر واتساب</a>
-      <a class="messenger" href="https://m.me/showgi249" target="_blank" rel="noopener" style="display: block; padding: 14px; background: #0084FF; color: #fff; border-radius: 10px; text-decoration: none; text-align: center; font-weight: bold;">💬 تواصل عبر ماسنجر</a>
-    </div>
-  </section>
+  // 3. تحديث الملف
+  const updateRes = await fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: 'إضافة رابط جديد من لوحة الإدارة',
+      content: base64Content,
+      sha: fileData.sha,
+      branch: GH_BRANCH
+    })
+  });
 
-  <!-- FOOTER -->
-  <footer>
-    <div>SHOWGI249</div>
-    <p>© 2026 أحمد شوقي — جميع الحقوق محفوظة</p>
-  </footer>
+  if (!updateRes.ok) {
+    const err = await updateRes.json();
+    throw new Error(err.message || 'فشل التحديث');
+  }
+  return true;
+}
 
-  <script>
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(function() {
-        alert('✅ تم نسخ الرقم بنجاح: ' + text);
-      }).catch(function(err) {
-        alert('❌ حدث خطأ أثناء النسخ.');
-        console.error('Copy failed: ', err);
-      });
-    }
-  </script>
+// نشر رابط جديد
+async function publishLink() {
+  const token = localStorage.getItem('gh_token');
+  if (!token) { alert('⚠️ الرمز غير محفوظ.'); return; }
 
-  <script src="script.js"></script>
-</body>
-</html>
+  const type = document.getElementById('addType').value;
+  const url = document.getElementById('addUrl').value.trim();
+  const title = document.getElementById('addTitle').value.trim();
+
+  if (!url || !url.startsWith('http')) {
+    alert('⚠️ أدخل رابطاً صحيحاً يبدأ بـ http');
+    return;
+  }
+
+  const btn = document.getElementById('publishBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري النشر...';
+  showStatus('⏳ جاري النشر...', '#94a3b8');
+
+  try {
+    // 1. جلب المحتوى الحالي
+    const data = await fetchContentJson();
+
+    // 2. إضافة الرابط
+    if (!Array.isArray(data[type])) data[type] = [];
+    data[type].unshift({
+      url: url,
+      title: title || 'محتوى جديد',
+      date: new Date().toISOString()
+    });
+    data.updated_at = new Date().toISOString();
+
+    // 3. تحديث على GitHub
+    await updateContentJson(data, token);
+
+    showStatus('✅ تم النشر! سيظهر خلال دقيقة.', '#22c55e');
+    document.getElementById('addUrl').value = '';
+    document.getElementById('addTitle').value = '';
+
+    // 4. إعادة تحميل البطاقات بعد 60 ثانية (انتظار النشر من GitHub Pages)
+    setTimeout(() => location.reload(), 60000);
+  } catch (err) {
+    showStatus('❌ ' + err.message, '#ef4444');
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🚀 نشر الرابط';
+  }
+}
+
+// تفعيل لوحة الأدمن إذا كان الرابط يحتوي على ?admin=1
+document.addEventListener('DOMContentLoaded', function() {
+  if (isAdminMode()) {
+    setTimeout(openAdmin, 500);
+  }
+});
+
+// إغلاق اللوحة بزر Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeAdmin();
+});
+</script>
