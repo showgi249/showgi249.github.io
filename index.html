@@ -118,33 +118,6 @@
     <div id="socialPostsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
       <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;"><p>جاري تحميل المنشورات...</p></div>
     </div>
-
-    <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 25px; max-width: 600px; margin: 40px auto 0;">
-      <h3 style="color: #fff; margin-bottom: 15px; text-align: center;">📝 اقترح منشوراً للنشر</h3>
-      <p style="color: #aaa; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">سيتم مراجعة منشورك قبل النشر.</p>
-      <form action="https://formsubmit.co/showgi249@gmail.com" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
-        <input type="hidden" name="_subject" value="📌 منشور جديد على SHOWGI249">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">الاسم</label>
-          <input type="text" name="name" required placeholder="اسمك" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">البريد الإلكتروني</label>
-          <input type="email" name="email" required placeholder="بريدك" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">رابط المنشور</label>
-          <input type="url" name="url" required placeholder="https://..." style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <div>
-          <label style="color: #fff; display: block; margin-bottom: 5px;">العنوان (اختياري)</label>
-          <input type="text" name="title" placeholder="عنوان قصير" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-        </div>
-        <button type="submit" style="background: #22c55e; color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: inherit;">📤 إرسال للمراجعة</button>
-      </form>
-    </div>
   </section>
 
   <!-- CONTENT CENTER -->
@@ -259,7 +232,6 @@
       </div>
 
       <div id="addSection" style="display: none;">
-        <!-- زر تغيير الرمز (يظهر دائماً) -->
         <button onclick="changeToken()" style="background: #f59e0b; color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; margin-bottom: 15px; font-family: inherit; font-size: 0.85rem;">🔑 تغيير الرمز / حذف المفتاح الحالي</button>
 
         <div style="margin-bottom: 15px;">
@@ -297,7 +269,6 @@
       });
     }
 
-    /* ==================== لوحة الإدارة ==================== */
     const GH_OWNER = 'showgi249';
     const GH_REPO = 'showgi249.github.io';
     const GH_FILE = 'content.json';
@@ -311,7 +282,6 @@
       const panel = document.getElementById('adminPanel');
       if (!panel) return;
       panel.style.display = 'block';
-
       const token = localStorage.getItem('gh_token');
       if (token) {
         document.getElementById('ghToken').value = token;
@@ -342,7 +312,6 @@
       showStatus('✅ تم حفظ الرمز بنجاح', '#22c55e');
     }
 
-    /* زر تغيير الرمز — يظهر دائماً */
     function changeToken() {
       if (!confirm('هل تريد تغيير الرمز الحالي؟ سيتم حذف الرمز المحفوظ.')) return;
       localStorage.removeItem('gh_token');
@@ -369,7 +338,6 @@
 
     async function updateContentJson(newData, token) {
       const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
-
       const getRes = await fetch(apiUrl, {
         headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
       });
