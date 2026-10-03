@@ -256,10 +256,12 @@
         <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">🔑 رمز GitHub (يُحفظ في متصفحك فقط):</label>
         <input type="password" id="ghToken" placeholder="ghp_..." style="width: 100%; padding: 12px; background: #1a1d24; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: monospace; margin-bottom: 10px; box-sizing: border-box;">
         <button onclick="saveToken()" style="background: #22c55e; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; font-family: inherit; font-size: 0.95rem;">💾 حفظ الرمز</button>
-        <button onclick="clearToken()" style="background: #ef4444; color: #fff; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 8px; font-size: 0.8rem; font-family: inherit;">🗑️ حذف الرمز المحفوظ</button>
       </div>
 
       <div id="addSection" style="display: none;">
+        <!-- زر تغيير الرمز (يظهر دائماً) -->
+        <button onclick="changeToken()" style="background: #f59e0b; color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; margin-bottom: 15px; font-family: inherit; font-size: 0.85rem;">🔑 تغيير الرمز / حذف المفتاح الحالي</button>
+
         <div style="margin-bottom: 15px;">
           <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">📌 نوع الإضافة:</label>
           <select id="addType" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
@@ -340,13 +342,14 @@
       showStatus('✅ تم حفظ الرمز بنجاح', '#22c55e');
     }
 
-    function clearToken() {
-      if (!confirm('هل أنت متأكد من حذف الرمز؟')) return;
+    /* زر تغيير الرمز — يظهر دائماً */
+    function changeToken() {
+      if (!confirm('هل تريد تغيير الرمز الحالي؟ سيتم حذف الرمز المحفوظ.')) return;
       localStorage.removeItem('gh_token');
       document.getElementById('ghToken').value = '';
       document.getElementById('tokenSection').style.display = 'block';
       document.getElementById('addSection').style.display = 'none';
-      showStatus('🗑️ تم حذف الرمز', '#ef4444');
+      showStatus('🗑️ تم حذف الرمز. الصق رمزاً جديداً.', '#f59e0b');
     }
 
     function showStatus(msg, color) {
