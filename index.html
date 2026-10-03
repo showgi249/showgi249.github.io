@@ -101,7 +101,7 @@
   <section id="content-links" class="section">
     <div class="section-heading">
       <span>02</span>
-      <div><h2>روابط المحتوى</h2><p>اضغط على أي بطاقة لتشغيل المحتوى أو فتحه في المنصة.</p></div>
+      <div><h2>روابط المحتوى</h2><p>فيديوهات تُشغَّل مباشرة داخل الموقع.</p></div>
     </div>
     <div id="contentLinksGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
       <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;"><p>جاري تحميل الروابط...</p></div>
@@ -112,7 +112,7 @@
   <section id="social-posts" class="section posts-section">
     <div class="section-heading">
       <span>03</span>
-      <div><h2>منشوراتي</h2><p>أحدث منشوراتي من مختلف المنصات.</p></div>
+      <div><h2>منشوراتي</h2><p>فيديوهات من قنواتي وكل منصاتي.</p></div>
     </div>
 
     <div id="socialPostsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
@@ -237,14 +237,15 @@
         <div style="margin-bottom: 15px;">
           <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">📌 نوع الإضافة:</label>
           <select id="addType" style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit;">
-            <option value="content_links">🔗 رابط محتوى (قسم روابط المحتوى)</option>
-            <option value="posts">📝 منشور (قسم منشوراتي)</option>
+            <option value="content_links">🎬 رابط محتوى (فيديو قابل للتشغيل)</option>
+            <option value="posts">📝 منشور (فيديو)</option>
           </select>
         </div>
 
         <div style="margin-bottom: 15px;">
           <label style="color: #fff; display: block; margin-bottom: 8px; font-weight: 600;">🌐 الرابط:</label>
           <input type="url" id="addUrl" placeholder="https://..." style="width: 100%; padding: 12px; background: #0d1017; border: 1px solid #2a2e38; border-radius: 8px; color: #fff; font-family: inherit; box-sizing: border-box;">
+          <p style="color: #94a3b8; font-size: 0.75rem; margin-top: 6px;">يدعم: YouTube · Vimeo · Telegram · Dailymotion</p>
         </div>
 
         <div style="margin-bottom: 15px;">
@@ -255,6 +256,11 @@
         <button onclick="publishLink()" id="publishBtn" style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: #fff; border: none; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 800; width: 100%; font-size: 1rem; font-family: inherit;">🚀 نشر الرابط</button>
         
         <div id="adminStatus" style="color: #94a3b8; font-size: 0.85rem; text-align: center; margin-top: 12px; min-height: 20px;"></div>
+
+        <hr style="border-color: #2a2e38; margin: 20px 0;">
+
+        <button onclick="removeDuplicates()" id="dedupeBtn" style="background: #dc2626; color: #fff; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; font-family: inherit; font-size: 0.9rem;">🧹 حذف الفيديوهات المكررة</button>
+        <div id="dedupeStatus" style="color: #94a3b8; font-size: 0.85rem; text-align: center; margin-top: 10px; min-height: 20px;"></div>
       </div>
     </div>
   </div>
@@ -329,6 +335,14 @@
       }
     }
 
+    function showDedupeStatus(msg, color) {
+      const el = document.getElementById('dedupeStatus');
+      if (el) {
+        el.textContent = msg;
+        el.style.color = color || '#94a3b8';
+      }
+    }
+
     async function fetchContentJson() {
       const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
       const res = await fetch(url);
@@ -336,7 +350,7 @@
       return await res.json();
     }
 
-    async function updateContentJson(newData, token) {
+    async function updateContentJson(newData, token, message) {
       const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
       const getRes = await fetch(apiUrl, {
         headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
@@ -355,7 +369,7 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          message: 'إضافة رابط جديد من لوحة الإدارة',
+          message: message || 'تحديث من لوحة الإدارة',
           content: base64Content,
           sha: fileData.sha,
           branch: GH_BRANCH
@@ -397,7 +411,7 @@
         });
         data.updated_at = new Date().toISOString();
 
-        await updateContentJson(data, token);
+        await updateContentJson(data, token, 'إضافة رابط جديد من لوحة الإدارة');
 
         showStatus('✅ تم النشر! سيظهر خلال دقيقة.', '#22c55e');
         document.getElementById('addUrl').value = '';
@@ -410,6 +424,70 @@
       } finally {
         btn.disabled = false;
         btn.textContent = '🚀 نشر الرابط';
+      }
+    }
+
+    /* ==================== حذف المكرر ==================== */
+    async function removeDuplicates() {
+      const token = localStorage.getItem('gh_token');
+      if (!token) { alert('⚠️ الرمز غير محفوظ.'); return; }
+
+      if (!confirm('سيتم حذف كل الروابط المكررة من content_links و posts. متابعة؟')) return;
+
+      const btn = document.getElementById('dedupeBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ جاري الفحص...';
+      showDedupeStatus('⏳ جاري الفحص...', '#94a3b8');
+
+      try {
+        const data = await fetchContentJson();
+        let totalRemoved = 0;
+        let report = [];
+
+        // دالة حذف المكرر من مصفوفة
+        function dedupeArray(arr, name) {
+          if (!Array.isArray(arr)) return { arr: [], removed: 0 };
+          const seen = new Set();
+          const unique = [];
+          let removed = 0;
+          for (const item of arr) {
+            const key = (item.url || '').trim().toLowerCase();
+            if (!key) { unique.push(item); continue; }
+            if (seen.has(key)) {
+              removed++;
+            } else {
+              seen.add(key);
+              unique.push(item);
+            }
+          }
+          if (removed > 0) report.push(`${name}: ${removed} مكرر`);
+          return { arr: unique, removed };
+        }
+
+        // فحص content_links
+        const linksResult = dedupeArray(data.content_links, 'روابط المحتوى');
+        data.content_links = linksResult.arr;
+        totalRemoved += linksResult.removed;
+
+        // فحص posts
+        const postsResult = dedupeArray(data.posts, 'المنشورات');
+        data.posts = postsResult.arr;
+        totalRemoved += postsResult.removed;
+
+        if (totalRemoved === 0) {
+          showDedupeStatus('✅ لا توجد روابط مكررة.', '#22c55e');
+        } else {
+          data.updated_at = new Date().toISOString();
+          await updateContentJson(data, token, `حذف ${totalRemoved} رابط مكرر`);
+          showDedupeStatus(`✅ تم حذف ${totalRemoved} رابط مكرر (${report.join(' · ')})`, '#22c55e');
+          setTimeout(() => location.reload(), 60000);
+        }
+      } catch (err) {
+        showDedupeStatus('❌ ' + err.message, '#ef4444');
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🧹 حذف الفيديوهات المكررة';
       }
     }
 
