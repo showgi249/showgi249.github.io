@@ -1,5 +1,11 @@
 {
-  "url": "https://www.youtube.com/watch?v=VIDEO_ID",
-  "title": "عنوان الفيديو",
-  "platform": "youtube"
+  "updated_at": "2026-10-03",
+  "posts": [],
+  "content_links": [
+    {
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "title": "فيديو تعريفي بقناتي",
+      "platform": "youtube"
+    }
+  ]
 }
