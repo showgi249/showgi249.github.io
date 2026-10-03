@@ -155,33 +155,7 @@ function renderPosts() {
   }).join("");
 }
 
-/* ============ عرض منشورات السوشيال ============ */
-
-function renderSocialPosts() {
-  if (!socialPostsContainer) return;
-  if (socialPosts.length === 0) {
-    socialPostsContainer.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
-        <p>لا توجد منشورات حالياً. كن أول من يقترح منشوراً!</p>
-      </div>`;
-    return;
-  }
-  socialPostsContainer.innerHTML = socialPosts.map(post => {
-    const { name, icon } = detectPlatform(post.url);
-    return `
-      <div style="background: #1a1d24; border: 1px solid #2a2e38; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="color: #fff; font-weight: bold; font-size: 0.9rem;">${icon} ${name}</span>
-        </div>
-        ${post.title ? `<p style="color: #ddd; font-size: 0.9rem; margin: 0;">${escapeHtml(post.title)}</p>` : ""}
-        ${post.name ? `<p style="color: #666; font-size: 0.75rem; margin: 0;">بواسطة: ${escapeHtml(post.name)}</p>` : ""}
-        <social-embed url="${escapeHtml(post.url)}" style="width: 100%; border-radius: 8px; overflow: hidden;"></social-embed>
-        <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener" style="color: #7c3aed; text-decoration: none; font-size: 0.85rem; text-align: center; word-break: break-all;">🔗 فتح في ${name}</a>
-      </div>`;
-  }).join("");
-}
-
-/* ============ روابط المحتوى ============ */
+/* ============ كشف منصات روابط المحتوى ============ */
 
 function detectContentPlatform(url) {
   if (!url) return { name: "منصة", icon: "🔗", color: "#666" };
@@ -204,7 +178,7 @@ function detectContentPlatform(url) {
 
 function getEmbedUrl(url) {
   let ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
-  if (ytMatch) return { type: "iframe", src: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` };
+  if (ytMatch) return { type: "iframe", src: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=0` };
 
   let vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
   if (vimeoMatch) return { type: "iframe", src: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1` };
@@ -216,6 +190,73 @@ function getEmbedUrl(url) {
 
   return { type: "embed-social", src: url };
 }
+
+/* ============ عرض منشورات السوشيال (مع تشغيل تلقائي للفيديو) ============ */
+
+function renderSocialPosts() {
+  if (!socialPostsContainer) return;
+
+  if (socialPosts.length === 0) {
+    socialPostsContainer.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 30px;">
+        <p>لا توجد منشورات حالياً.</p>
+      </div>`;
+    return;
+  }
+
+  socialPostsContainer.innerHTML = socialPosts.map((post, index) => {
+    const { name, icon, color } = detectContentPlatform(post.url);
+    const title = post.title ? escapeHtml(post.title) : name;
+    const embed = getEmbedUrl(post.url);
+
+    // إذا كان فيديو قابل للتضمين المباشر (YouTube, Vimeo, Telegram)
+    // → نعرض الفيديو مباشرة بدون زر تشغيل
+    let mediaContent = "";
+    if (embed.type === "iframe") {
+      mediaContent = `
+        <div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden;">
+          <iframe src="${embed.src}"
+                  style="width: 100%; height: 100%; border: none;"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+          </iframe>
+        </div>`;
+    } else {
+      // منصات أخرى — عرض بواسطة social-embed (تلقائي أيضاً)
+      mediaContent = `
+        <div style="background: #0d1017; border-radius: 10px; padding: 10px; min-height: 180px;">
+          <social-embed url="${escapeHtml(post.url)}" style="width: 100%;"></social-embed>
+        </div>`;
+    }
+
+    return `
+      <div style="background: linear-gradient(135deg, rgba(26, 29, 36, 0.95), rgba(15, 18, 28, 0.95)); border: 1px solid #2a2e38; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; transition: all 0.3s;"
+           onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='${color}';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#2a2e38';">
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="display: inline-flex; align-items: center; gap: 8px; color: #fff; font-weight: 700; font-size: 0.9rem;">
+            <span style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: ${color}22; border: 1px solid ${color}55; border-radius: 8px; font-size: 1rem;">${icon}</span>
+            ${name}
+          </span>
+        </div>
+
+        ${mediaContent}
+
+        <div style="color: #fff; font-weight: 700; font-size: 0.95rem; line-height: 1.4;">
+          ${title}
+        </div>
+
+        <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener"
+           style="display: block; background: ${color}; color: #fff; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.85rem; text-align: center;">
+          ↗ فتح في ${name}
+        </a>
+      </div>`;
+  }).join("");
+}
+
+/* ============ روابط المحتوى ============ */
 
 function renderContentLinks() {
   if (!contentLinksGrid) return;
