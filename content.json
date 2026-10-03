@@ -4,8 +4,68 @@
   "content_links": [
     {
       "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "title": "فيديو تعريفي بقناتي",
+      "title": "فيديو على يوتيوب",
       "platform": "youtube"
+    },
+    {
+      "url": "https://vimeo.com/76979871",
+      "title": "فيديو على فيميو",
+      "platform": "vimeo"
+    },
+    {
+      "url": "https://x.com/showgi249",
+      "title": "حسابي على X",
+      "platform": "x"
+    },
+    {
+      "url": "https://www.instagram.com/p/Cxxxxxxxxxx/",
+      "title": "منشور انستقرام",
+      "platform": "instagram"
+    },
+    {
+      "url": "https://www.tiktok.com/@showgi249/video/1234567890",
+      "title": "فيديو تيك توك",
+      "platform": "tiktok"
+    },
+    {
+      "url": "https://www.facebook.com/showgi249",
+      "title": "صفحتي على فيسبوك",
+      "platform": "facebook"
+    },
+    {
+      "url": "https://www.threads.com/@showgi249/post/Cxxxxxxxx",
+      "title": "منشور ثريدز",
+      "platform": "threads"
+    },
+    {
+      "url": "https://t.me/showgi249",
+      "title": "قناتي على تيليجرام",
+      "platform": "telegram"
+    },
+    {
+      "url": "https://www.snapchat.com/add/showgi249",
+      "title": "حسابي على سناب شات",
+      "platform": "snapchat"
+    },
+    {
+      "url": "https://www.linkedin.com/in/showgi249",
+      "title": "حسابي على لينكد إن",
+      "platform": "linkedin"
+    },
+    {
+      "url": "https://www.reddit.com/user/showgi249",
+      "title": "حسابي على ريديت",
+      "platform": "reddit"
+    },
+    {
+      "url": "https://www.pinterest.com/showgi249",
+      "title": "حسابي على بينترست",
+      "platform": "pinterest"
+    },
+    {
+      "url": "https://github.com/showgi249",
+      "title": "حسابي على GitHub",
+      "platform": "github"
     }
   ]
 }
