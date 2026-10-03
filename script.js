@@ -65,6 +65,20 @@ function detectPlatform(url) {
     return { platform: "facebook", name: "Facebook", icon: "👤" };
   if (url.includes("threads.com") || url.includes("threads.net"))
     return { platform: "threads", name: "Threads", icon: "🧵" };
+  if (url.includes("t.me") || url.includes("telegram"))
+    return { platform: "telegram", name: "Telegram", icon: "✈️" };
+  if (url.includes("snapchat.com"))
+    return { platform: "snapchat", name: "Snapchat", icon: "👻" };
+  if (url.includes("linkedin.com"))
+    return { platform: "linkedin", name: "LinkedIn", icon: "💼" };
+  if (url.includes("reddit.com"))
+    return { platform: "reddit", name: "Reddit", icon: "👽" };
+  if (url.includes("pinterest.com"))
+    return { platform: "pinterest", name: "Pinterest", icon: "📌" };
+  if (url.includes("vimeo.com"))
+    return { platform: "vimeo", name: "Vimeo", icon: "🎥" };
+  if (url.includes("github.com"))
+    return { platform: "github", name: "GitHub", icon: "🐙" };
   if (url.includes("bsky.app"))
     return { platform: "bluesky", name: "Bluesky", icon: "🦋" };
   return { platform: "unknown", name: "منشور", icon: "🔗" };
@@ -82,7 +96,6 @@ async function loadRemotePosts() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
-    // محتوى مركز المحتوى
     if (Array.isArray(data.youtube_videos)) {
       allPosts = data.youtube_videos.map(v => ({
         id: v.videoId,
@@ -100,12 +113,10 @@ async function loadRemotePosts() {
       allPosts = [];
     }
 
-    // منشورات السوشيال (بدون type)
     if (Array.isArray(data.posts)) {
       socialPosts = data.posts.filter(p => p.url && !p.type);
     }
 
-    // روابط المحتوى
     if (Array.isArray(data.content_links)) {
       allContentLinks = data.content_links;
     } else {
@@ -206,40 +217,92 @@ function renderSocialPosts() {
   }).join("");
 }
 
-/* ============ روابط المحتوى ============ */
+/* ============ روابط المحتوى — كل المنصات ============ */
 
 function detectContentPlatform(url) {
   if (!url) return { name: "منصة", icon: "🔗", color: "#666" };
+
+  // YouTube
   if (url.includes("youtube.com") || url.includes("youtu.be"))
     return { name: "YouTube", icon: "🎬", color: "#ff0000" };
+
+  // Vimeo
+  if (url.includes("vimeo.com"))
+    return { name: "Vimeo", icon: "🎥", color: "#1ab7ea" };
+
+  // X / Twitter
   if (url.includes("twitter.com") || url.includes("x.com"))
     return { name: "X (Twitter)", icon: "🐦", color: "#1d9bf0" };
+
+  // Instagram
   if (url.includes("instagram.com"))
     return { name: "Instagram", icon: "📸", color: "#e1306c" };
+
+  // TikTok
   if (url.includes("tiktok.com"))
     return { name: "TikTok", icon: "🎵", color: "#ff0050" };
+
+  // Facebook
   if (url.includes("facebook.com") || url.includes("fb.com"))
     return { name: "Facebook", icon: "👤", color: "#1877f2" };
+
+  // Threads
+  if (url.includes("threads.com") || url.includes("threads.net"))
+    return { name: "Threads", icon: "🧵", color: "#000000" };
+
+  // Telegram
+  if (url.includes("t.me") || url.includes("telegram"))
+    return { name: "Telegram", icon: "✈️", color: "#0088cc" };
+
+  // Snapchat
+  if (url.includes("snapchat.com"))
+    return { name: "Snapchat", icon: "👻", color: "#fffc00" };
+
+  // LinkedIn
+  if (url.includes("linkedin.com"))
+    return { name: "LinkedIn", icon: "💼", color: "#0a66c2" };
+
+  // Reddit
+  if (url.includes("reddit.com"))
+    return { name: "Reddit", icon: "👽", color: "#ff4500" };
+
+  // Pinterest
+  if (url.includes("pinterest.com"))
+    return { name: "Pinterest", icon: "📌", color: "#e60023" };
+
+  // GitHub
+  if (url.includes("github.com"))
+    return { name: "GitHub", icon: "🐙", color: "#333333" };
+
+  // Bluesky
+  if (url.includes("bsky.app"))
+    return { name: "Bluesky", icon: "🦋", color: "#0085ff" };
+
+  // WhatsApp
+  if (url.includes("wa.me") || url.includes("whatsapp"))
+    return { name: "WhatsApp", icon: "💬", color: "#25d366" };
+
   return { name: "المنصة", icon: "🔗", color: "#666" };
 }
 
 function getEmbedUrl(url) {
-  let ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  // YouTube — تشغيل مباشر
+  let ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]+)/);
   if (ytMatch) return { type: "iframe", src: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` };
 
+  // Vimeo — تشغيل مباشر
   let vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
   if (vimeoMatch) return { type: "iframe", src: `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1` };
 
-  if (url.includes("x.com") || url.includes("twitter.com"))
+  // Telegram — يدعم التضمين الرسمي
+  if (url.includes("t.me")) {
+    let tgMatch = url.match(/t\.me\/([^\/]+)\/(\d+)/);
+    if (tgMatch) return { type: "iframe", src: `https://t.me/${tgMatch[1]}/${tgMatch[2]}?embed=1` };
     return { type: "embed-social", src: url };
-  if (url.includes("tiktok.com"))
-    return { type: "embed-social", src: url };
-  if (url.includes("instagram.com"))
-    return { type: "embed-social", src: url };
-  if (url.includes("facebook.com"))
-    return { type: "embed-social", src: url };
+  }
 
-  return { type: "link", src: url };
+  // بقية المنصات تستخدم social-embed
+  return { type: "embed-social", src: url };
 }
 
 function renderContentLinks() {
